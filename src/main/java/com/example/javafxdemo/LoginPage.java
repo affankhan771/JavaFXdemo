@@ -1,4 +1,5 @@
 package com.example.javafxdemo;
+import java.util.List;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -47,7 +48,7 @@ public class LoginPage extends Application {
         // Message Label
         Label messageLabel = new Label();
         messageLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
-
+/*
         // Login Button Action
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
@@ -55,6 +56,22 @@ public class LoginPage extends Application {
 
             if (username.equals("admin") && password.equals("password")) {
                 // Open the next screen
+                openDashboard(primaryStage);
+            } else {
+                messageLabel.setText("Invalid credentials. Please try again.");
+            }
+        });
+*/
+        // Login Button Action
+        loginButton.setOnAction(e -> {
+            String username = usernameField.getText();
+            String password = passwordField.getText();
+
+            // Call the verifyUserCredentials method from DataOperations to check the login details
+            boolean isValidUser = DataOperations.verifyUserCredentials(username, password);
+
+            if (isValidUser) {
+                // Open the next screen (dashboard)
                 openDashboard(primaryStage);
             } else {
                 messageLabel.setText("Invalid credentials. Please try again.");
@@ -126,6 +143,14 @@ public class LoginPage extends Application {
             contentArea.getChildren().add(createIdeaSubmissionForm(primaryStage));
         } else if (optionIndex == 1) {
             contentArea.getChildren().add(createIdeaTrackingScreen(primaryStage));
+        } else if (optionIndex == 2) {
+            // Use ScrollPane to make ideas scrollable
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setContent(createApprovalBox(primaryStage));
+            scrollPane.setFitToWidth(true); // Ensure content fits horizontally
+            scrollPane.setStyle("-fx-background-color: black;");
+
+            contentArea.getChildren().add(scrollPane);
         } else {
             // Default content for other options
             Label screenLabel = new Label("Content for option " + (optionIndex + 1));
@@ -275,7 +300,7 @@ public class LoginPage extends Application {
 
             // Stage Name
             Label stageLabel = new Label((i + 1) + ". " + stages[i]);
-            stageLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: white;");
+            stageLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: black;");
 
             // Checkbox for Completion
             CheckBox stageCheckbox = new CheckBox();
@@ -331,6 +356,83 @@ public class LoginPage extends Application {
             }
         }
     }
+
+    private VBox createApprovalBox(Stage primaryStage) {
+        // VBox to hold idea entries
+        VBox ideasBox = new VBox(20);
+        ideasBox.setPadding(new Insets(20));
+        ideasBox.setStyle("-fx-background-color: #333333;");
+
+        // Mock ideas data
+        List<String[]> mockIdeas = List.of(
+                new String[]{"Idea 1", "Description for idea 1", "Drug X", "Category A", "C6H12O6", "120"},
+                new String[]{"Idea 2", "Description for idea 2", "Drug Y", "Category B", "H2O", "200"},
+                new String[]{"Idea 3", "Description for idea 3", "Drug Z", "Category C", "NaCl", "300"},
+                new String[]{"Idea 4", "Description for idea 4", "Drug A", "Category D", "CH4", "400"}
+                // Add as many ideas as required
+        );
+
+        for (String[] idea : mockIdeas) {
+            // Each idea box
+            VBox ideaBox = new VBox(10);
+            ideaBox.setPadding(new Insets(15));
+            ideaBox.setStyle("-fx-background-color: #555555; -fx-border-radius: 5px; -fx-background-radius: 5px;");
+
+            // Idea details
+            Label ideaName = new Label("Idea Name: " + idea[0]);
+            ideaName.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;");
+            Label ideaDesc = new Label("Description: " + idea[1]);
+            ideaDesc.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
+            Label drugDetails = new Label("Drug Name: " + idea[2] + ", Category: " + idea[3] + ", Formula: " + idea[4] + ", Price: $" + idea[5]);
+            drugDetails.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
+
+            // Buttons for approval
+            HBox buttons = new HBox(10);
+            Button approveButton = new Button("Approve");
+            approveButton.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font-weight: bold;");
+            Button disapproveButton = new Button("Disapprove");
+            disapproveButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
+
+            // Button actions
+            approveButton.setOnAction(e -> {
+                ideaBox.setStyle("-fx-background-color: green; -fx-border-radius: 5px; -fx-background-radius: 5px;");
+                approveButton.setDisable(true);
+                disapproveButton.setDisable(true);
+            });
+            disapproveButton.setOnAction(e -> {
+                ideaBox.setStyle("-fx-background-color: red; -fx-border-radius: 5px; -fx-background-radius: 5px;");
+                approveButton.setDisable(true);
+                disapproveButton.setDisable(true);
+            });
+
+            buttons.getChildren().addAll(approveButton, disapproveButton);
+            ideaBox.getChildren().addAll(ideaName, ideaDesc, drugDetails, buttons);
+            ideasBox.getChildren().add(ideaBox);
+        }
+
+        return ideasBox;
+    }
+
+    private void showApprovalScreen(Stage primaryStage) {
+        // Main layout for the approval screen
+        BorderPane layout = new BorderPane();
+        layout.setTop(getNavBar(primaryStage)); // Use the existing NavBar
+        layout.setLeft(getSidebar(primaryStage)); // Use the existing Sidebar
+
+        // Wrap the returned VBox in a ScrollPane
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setContent(createApprovalBox(primaryStage)); // Add the VBox returned by createApprovalBox
+        scrollPane.setFitToWidth(true); // Ensure the content fits horizontally
+        scrollPane.setStyle("-fx-background: #333333;");
+
+        layout.setCenter(scrollPane); // Set the ScrollPane in the center of the layout
+
+        // Scene and Stage setup
+        Scene approvalScene = new Scene(layout, 900, 600);
+        primaryStage.setScene(approvalScene);
+    }
+
+
 
     // Reusable NavBar method (for reusing in showScreenContent)
     private HBox getNavBar(Stage primaryStage) {
@@ -408,7 +510,7 @@ public class LoginPage extends Application {
     public static void main(String[] args) {
         DatabaseConnection.connect();
         DatabaseSetup.createTable();
-        DataOperations.insertUser("Chandiyo", "Chandiyo");
+       // DataOperations.insertUser("Chandiyo", "Chandiyo");
         launch(args);
     }
 }
