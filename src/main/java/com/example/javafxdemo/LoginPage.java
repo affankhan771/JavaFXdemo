@@ -180,7 +180,7 @@ public class LoginPage extends Application {
         sidebar.setAlignment(Pos.TOP_CENTER);
 
         // Sidebar Options (6 random options)
-        String[] sidebarOptions = {"ABC", "ABD", "XYZ", "DEF", "GHI", "JKL"};
+        String[] sidebarOptions = {"Idea Submission", "Idea Tracking", "My Approvals", "ABC", "GHI", "JKL"};
         Button[] optionButtons = new Button[6];
 
         for (int i = 0; i < sidebarOptions.length; i++) {
@@ -210,6 +210,9 @@ public class LoginPage extends Application {
 
 
     public static void main(String[] args) {
+        DatabaseConnection.connect();
+        DatabaseSetup.createTable();
+        DataOperations.insertUser("Chandiyo", "Chandiyo");
         launch(args);
     }
 }
