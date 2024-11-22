@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.VBox?>
+
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javafxdemo.IdeaSubmissionController"
+      alignment="CENTER" spacing="15" style="-fx-background-color: black; -fx-padding: 20px;">
+    <Label text="Drug Submission Form" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: white;" />
+
+    <Label text="Drug Name:" style="-fx-text-fill: white;" />
+    <TextField fx:id="drugNameField" promptText="Enter the drug name" />
+
+    <Label text="Description:" style="-fx-text-fill: white;" />
+    <TextArea fx:id="descriptionField" promptText="Enter a brief description of the drug"
+              wrapText="true" prefHeight="100" />
+
+    <Label text="Drug Category:" style="-fx-text-fill: white;" />
+
+    <ComboBox fx:id="categoryDropdown" promptText="Select a category">
+
+        <!--<items>
+            <FXCollections fx:factory="observableArrayList">
+                <String fx:value="Analgesic" />
+                <String fx:value="Antibiotic" />
+                <String fx:value="Antiseptic" />
+                <String fx:value="Vaccine" />
+                <String fx:value="Others" />
+            </FXCollections>
+        </items>
+        -->
+    </ComboBox>
+
+    <Label text="Chemical Formula:" style="-fx-text-fill: white;" />
+    <TextField fx:id="formulaField" promptText="Enter the chemical formula" />
+
+    <Label text="Estimated Price (USD):" style="-fx-text-fill: white;" />
+    <TextField fx:id="priceField" promptText="Enter the estimated price" />
+
+    <Button text="Submit" style="-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 14px;"
+            onAction="#handleSubmit" />
+</VBox>
