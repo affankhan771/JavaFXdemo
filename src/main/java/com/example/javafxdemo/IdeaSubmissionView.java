@@ -1,3 +1,4 @@
+/*
 package com.example.javafxdemo;
 
 import javafx.geometry.Insets;
@@ -109,5 +110,25 @@ public class IdeaSubmissionView {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.showAndWait();
+    }
+}*/
+package com.example.javafxdemo;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class IdeaSubmissionView {
+
+    public VBox createIdeaSubmissionForm(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("IdeaSubmissionView.fxml"));
+            return loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return new VBox(); // Return an empty VBox in case of error
+        }
     }
 }

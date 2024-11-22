@@ -1,5 +1,8 @@
 package com.example.javafxdemo;
+import java.io.IOException;
 import java.util.List;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.VBox;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
@@ -31,6 +34,41 @@ public class LoginPage extends Application {
                     System.out.println("Signup button clicked. Implement signup logic here.");
                 }
         );
+
+        /*try {
+            System.out.println("Loading FXML...");
+
+            // Load the FXML file
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/login_form_view.fxml"));
+            VBox loginForm = loader.load();
+
+            System.out.println("FXML loaded successfully.");
+
+            // Get the controller and set the primary stage
+            LoginFormController controller = loader.getController();
+            controller.setPrimaryStage(primaryStage);
+
+            // Background Image
+            Image backgroundImage = new Image("file:C:\\Users\\admin\\IdeaProjects\\JavaFXdemo\\src\\main\\resources\\bg.png");
+            BackgroundImage bgImage = new BackgroundImage(
+                    backgroundImage,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundPosition.CENTER,
+                    new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
+            );
+            loginForm.setBackground(new Background(bgImage));
+
+            // Create the scene and show the stage
+            Scene scene = new Scene(loginForm, 900, 600);
+            primaryStage.setTitle("Login Screen");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println("Failed to load FXML file.");
+        }*/
 
         // Background Image
         Image backgroundImage = new Image("file:C:\\Users\\admin\\IdeaProjects\\JavaFXdemo\\src\\main\\resources\\bg.png");
