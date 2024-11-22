@@ -11,81 +11,29 @@ import javafx.scene.layout.*;
 import javafx.stage.Stage;
 
 public class LoginPage extends Application {
+
+    private final LoginFormView loginFormView = new LoginFormView();
     @Override
     public void start(Stage primaryStage) {
-        // Title Label
-        Label titleLabel = new Label("Login Page");
-        titleLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
-
-        // Username Field
-        TextField usernameField = new TextField();
-        usernameField.setPromptText("Username");
-        usernameField.setMaxWidth(300);
-        usernameField.setStyle("-fx-background-color: white; -fx-text-fill: black; " +
-                "-fx-prompt-text-fill: gray; -fx-border-color: #555555; -fx-border-radius: 5px; -fx-background-radius: 5px;");
-
-        // Password Field
-        PasswordField passwordField = new PasswordField();
-        passwordField.setPromptText("Password");
-        passwordField.setMaxWidth(300);
-        passwordField.setStyle("-fx-background-color: white; -fx-text-fill: black; " +
-                "-fx-prompt-text-fill: gray; -fx-border-color: #555555; -fx-border-radius: 5px; -fx-background-radius: 5px;");
-
-        // Login Button
-        Button loginButton = new Button("Login");
-        loginButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 14px; " +
-                "-fx-border-radius: 5px; -fx-background-radius: 5px;");
-        loginButton.setOnMouseEntered(e -> loginButton.setStyle("-fx-background-color: #777777; -fx-text-fill: white;"));
-        loginButton.setOnMouseExited(e -> loginButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white;"));
-
-        // Signup Button
-        Button signupButton = new Button("Signup");
-        signupButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 14px; " +
-                "-fx-border-radius: 5px; -fx-background-radius: 5px;");
-        signupButton.setOnMouseEntered(e -> signupButton.setStyle("-fx-background-color: #777777; -fx-text-fill: white;"));
-        signupButton.setOnMouseExited(e -> signupButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white;"));
-
-        // Message Label
-        Label messageLabel = new Label();
-        messageLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
-/*
-        // Login Button Action
-        loginButton.setOnAction(e -> {
-            String username = usernameField.getText();
-            String password = passwordField.getText();
-
-            if (username.equals("admin") && password.equals("password")) {
-                // Open the next screen
-                openDashboard(primaryStage);
-            } else {
-                messageLabel.setText("Invalid credentials. Please try again.");
-            }
-        });
-*/
-        // Login Button Action
-        loginButton.setOnAction(e -> {
-            String username = usernameField.getText();
-            String password = passwordField.getText();
-
-            // Call the verifyUserCredentials method from DataOperations to check the login details
-            boolean isValidUser = DataOperations.verifyUserCredentials(username, password);
-
-            if (isValidUser) {
-                // Open the next screen (dashboard)
-                openDashboard(primaryStage);
-            } else {
-                messageLabel.setText("Invalid credentials. Please try again.");
-            }
-        });
-
-        // Layout
-        VBox layout = new VBox(15);
-        layout.setPadding(new Insets(40));
-        layout.getChildren().addAll(titleLabel, usernameField, passwordField, loginButton, signupButton, messageLabel);
-        layout.setAlignment(Pos.CENTER);
+        // Create the login form using LoginFormView
+        VBox loginForm = loginFormView.createLoginForm(primaryStage,
+                (username, password, stage) -> {
+                    // Login Button Action
+                    boolean isValidUser = DataOperations.verifyUserCredentials(username, password);
+                    if (isValidUser) {
+                        openDashboard(stage);
+                    } else {
+                        System.out.println("Invalid credentials. Please try again.");
+                    }
+                },
+                stage -> {
+                    // Signup Button Action (for now, just a placeholder)
+                    System.out.println("Signup button clicked. Implement signup logic here.");
+                }
+        );
 
         // Background Image
-        Image backgroundImage = new Image("file:C:\\Users\\admin\\IdeaProjects\\JavaFXdemo\\src\\main\\resources\\bg.png"); // Replace with your image path
+        Image backgroundImage = new Image("file:C:\\Users\\admin\\IdeaProjects\\JavaFXdemo\\src\\main\\resources\\bg.png");
         BackgroundImage bgImage = new BackgroundImage(
                 backgroundImage,
                 BackgroundRepeat.NO_REPEAT,
@@ -93,16 +41,16 @@ public class LoginPage extends Application {
                 BackgroundPosition.CENTER,
                 new BackgroundSize(BackgroundSize.AUTO, BackgroundSize.AUTO, false, false, true, true)
         );
-        layout.setBackground(new Background(bgImage));
+        loginForm.setBackground(new Background(bgImage));
 
-        // Scene
-        Scene scene = new Scene(layout, 900, 600);
-
+        // Scene and Stage
+        Scene scene = new Scene(loginForm, 900, 600);
         primaryStage.setTitle("Login Screen");
         primaryStage.setScene(scene);
         primaryStage.show();
     }
 
+/*
     private void openDashboard(Stage primaryStage) {
         // Navigation Bar (unchanged)
         HBox navBar = getNavBar(primaryStage);
@@ -131,6 +79,29 @@ public class LoginPage extends Application {
         primaryStage.setScene(dashboardScene);
         primaryStage.setTitle("Dashboard");
     }
+*/
+
+   /* private LoginView loginView = new LoginView(new DashboardView());
+    @Override
+    public void start(Stage primaryStage) {
+        loginView.showLoginScreen(primaryStage);
+    }*/
+
+
+    //private ApprovalView approvalView = new ApprovalView();
+    private DashboardView dashboardView = new DashboardView();
+    private void openDashboard(Stage primaryStage) {
+        dashboardView.openDashboard(primaryStage, getNavBar(primaryStage), getSidebar(primaryStage));
+    }
+    private NavBarView navBarView = new NavBarView();
+    private SidebarView sidebarView = new SidebarView();
+    public HBox getNavBar(Stage primaryStage) {
+        return navBarView.createNavBar(primaryStage);
+    }
+
+    public VBox getSidebar(Stage primaryStage) {
+        return sidebarView.createSidebar(primaryStage, (stage, index) -> showScreenContent(stage, index));
+    }
 
 
     // Function to show screen content based on clicked option
@@ -140,9 +111,14 @@ public class LoginPage extends Application {
         contentArea.setStyle("-fx-background-color: black; -fx-padding: 20px;");
 
         if (optionIndex == 0) {  // Option 1 - Idea Submission screen
-            contentArea.getChildren().add(createIdeaSubmissionForm(primaryStage));
+            // Create instance of IdeaSubmissionView and use it
+            IdeaSubmissionView ideaSubmissionView = new IdeaSubmissionView();
+            contentArea.getChildren().add(ideaSubmissionView.createIdeaSubmissionForm(primaryStage));
         } else if (optionIndex == 1) {
-            contentArea.getChildren().add(createIdeaTrackingScreen(primaryStage));
+           // contentArea.getChildren().add(createIdeaTrackingScreen(primaryStage));
+            IdeaTrackingView ideaTrackingView = new IdeaTrackingView();
+            contentArea.getChildren().add(ideaTrackingView.createIdeaTrackingScreen(primaryStage));
+
         } else if (optionIndex == 2) {
             // Use ScrollPane to make ideas scrollable
             ScrollPane scrollPane = new ScrollPane();
@@ -151,6 +127,7 @@ public class LoginPage extends Application {
             scrollPane.setStyle("-fx-background-color: black;");
 
             contentArea.getChildren().add(scrollPane);
+            //approvalView.showApprovalScreen(primaryStage, getNavBar(primaryStage), getSidebar(primaryStage));
         } else {
             // Default content for other options
             Label screenLabel = new Label("Content for option " + (optionIndex + 1));
@@ -168,7 +145,7 @@ public class LoginPage extends Application {
         Scene newScene = new Scene(mainLayout, 900, 600);
         primaryStage.setScene(newScene);
     }
-
+/*
     private VBox createIdeaSubmissionForm(Stage primaryStage) {
         // Form container
         VBox formArea = new VBox(15);
@@ -356,6 +333,7 @@ public class LoginPage extends Application {
             }
         }
     }
+*/
 
     private VBox createApprovalBox(Stage primaryStage) {
         // VBox to hold idea entries
@@ -414,28 +392,29 @@ public class LoginPage extends Application {
     }
 
     private void showApprovalScreen(Stage primaryStage) {
-        // Main layout for the approval screen
-        BorderPane layout = new BorderPane();
-        layout.setTop(getNavBar(primaryStage)); // Use the existing NavBar
-        layout.setLeft(getSidebar(primaryStage)); // Use the existing Sidebar
+            // Main layout for the approval screen
+            BorderPane layout = new BorderPane();
+            layout.setTop(getNavBar(primaryStage)); // Use the existing NavBar
+            layout.setLeft(getSidebar(primaryStage)); // Use the existing Sidebar
 
-        // Wrap the returned VBox in a ScrollPane
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setContent(createApprovalBox(primaryStage)); // Add the VBox returned by createApprovalBox
-        scrollPane.setFitToWidth(true); // Ensure the content fits horizontally
-        scrollPane.setStyle("-fx-background: #333333;");
+            // Wrap the returned VBox in a ScrollPane
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setContent(createApprovalBox(primaryStage)); // Add the VBox returned by createApprovalBox
+            scrollPane.setFitToWidth(true); // Ensure the content fits horizontally
+            scrollPane.setStyle("-fx-background: #333333;");
 
-        layout.setCenter(scrollPane); // Set the ScrollPane in the center of the layout
+            layout.setCenter(scrollPane); // Set the ScrollPane in the center of the layout
 
-        // Scene and Stage setup
-        Scene approvalScene = new Scene(layout, 900, 600);
-        primaryStage.setScene(approvalScene);
-    }
+            // Scene and Stage setup
+            Scene approvalScene = new Scene(layout, 900, 600);
+            primaryStage.setScene(approvalScene);
+        }
 
 
 
+/*
     // Reusable NavBar method (for reusing in showScreenContent)
-    private HBox getNavBar(Stage primaryStage) {
+    public HBox getNavBar(Stage primaryStage) {
         HBox navBar = new HBox(20);
         navBar.setPadding(new Insets(10));
         navBar.setStyle("-fx-background-color: #333333; -fx-padding: 10px;");
@@ -470,7 +449,7 @@ public class LoginPage extends Application {
 
 
     // Reusable Sidebar method (for reusing in showScreenContent)
-    private VBox getSidebar(Stage primaryStage) {
+    public VBox getSidebar(Stage primaryStage) {
         VBox sidebar = new VBox(20);
         sidebar.setPadding(new Insets(20, 10, 10, 10));
         sidebar.setStyle("-fx-background-color: #333333; -fx-padding: 20px;");
@@ -503,7 +482,7 @@ public class LoginPage extends Application {
 
         return sidebar;
     }
-
+*/
 
 
 
