@@ -9,9 +9,11 @@ class Idea {
     private String chemicalFormula;
     private String estimatedPrice;
     private String submittedby;
+    private int status; // New field
 
-    public Idea(int id,String name, String description, String category, String chemicalFormula, String estimatedPrice,String submittedby) {
+    public Idea(int id,String name, String description, String category, String chemicalFormula, String estimatedPrice,String submittedby,int status) {
         this.name = name;
+        this.status = status;
         this.id = id;
         this.description = description;
         this.category = category;
@@ -41,5 +43,10 @@ class Idea {
         return estimatedPrice;
     }
     public String getSubmittedby() {return submittedby;}
+    public int getStatus() {return status;}
+    public void setStatus(int status) {this.status = status;}
+    public void setIdeaId(int id) {this.id = id;}
+    public void setDescription(String description) {this.description = description;}
+    public void setCategory(String category) {this.category = category;}
 }
 

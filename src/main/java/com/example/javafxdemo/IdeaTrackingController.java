@@ -1,13 +1,15 @@
 package com.example.javafxdemo;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Label;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+
+import java.util.List;
 
 public class IdeaTrackingController {
 
@@ -17,30 +19,42 @@ public class IdeaTrackingController {
     @FXML
     private ScrollPane roadmapContainer;
 
-    @FXML
     private VBox roadmapGraph;
 
     public void initialize() {
-        // Populate the dropdown with ideas (mock data for now)
-        ideaDropdown.getItems().addAll("Idea 1", "Idea 2", "Idea 3");
-
         // Create the initial roadmap graph
         roadmapGraph = createRoadmapGraph();
         roadmapContainer.setContent(roadmapGraph);
 
+        // Fetch ideas from the database
+        List<Idea> allIdeas = DataOperations.getAllIdeas();
+
+        // Populate the dropdown with idea IDs and names
+        for (Idea idea : allIdeas) {
+            ideaDropdown.getItems().add("ID: " + idea.getIdeaId() + " - " + idea.getName());
+        }
+
         // Add listener for dropdown selection
         ideaDropdown.setOnAction(e -> {
-            String selectedIdea = ideaDropdown.getValue();
-            if (selectedIdea != null) {
-                System.out.println("Tracking progress for: " + selectedIdea);
-                updateRoadmapProgress(roadmapGraph, selectedIdea);
+            String selectedItem = ideaDropdown.getValue();
+            if (selectedItem != null) {
+                // Extract the ideaID from the selected item
+                int ideaID = extractIdeaID(selectedItem);
+                // Fetch the idea's status from the database
+                int ideaStatus = DataOperations.getIdeaStatusById(ideaID);
+                if (ideaStatus != -1) {
+                    System.out.println("Tracking progress for Idea ID: " + ideaID + " with status: " + ideaStatus);
+                    updateRoadmapProgress(ideaStatus);
+                } else {
+                    System.err.println("Idea not found or error retrieving status.");
+                }
             }
         });
     }
 
     private VBox createRoadmapGraph() {
-        VBox graph = new VBox(20); // Root container for the roadmap graph
-        graph.setStyle("-fx-padding: 20px;");
+        VBox graph = new VBox(10); // Root container for the roadmap graph
+        graph.setStyle("-fx-padding: 20px; -fx-background-color: #333333;");
 
         // Define the 7 stages for the roadmap
         String[] stages = {
@@ -61,11 +75,11 @@ public class IdeaTrackingController {
             // Checkbox for the stage
             CheckBox checkbox = new CheckBox(); // Standalone checkbox
             checkbox.setStyle("-fx-text-fill: white;");
-            checkbox.setDisable(true); // Initially disabled
+            checkbox.setDisable(true); // Disabled, as users should not manually change it
 
             // Stage Label
             Label stageLabel = new Label(stages[i]); // Descriptive label for the stage
-            stageLabel.setStyle("-fx-font-size: 18px; -fx-text-fill: white;");
+            stageLabel.setStyle("-fx-font-size: 16px; -fx-text-fill: white;");
 
             // Add the checkbox and label to the HBox
             stageNode.getChildren().addAll(checkbox, stageLabel);
@@ -75,7 +89,7 @@ public class IdeaTrackingController {
 
             // Add a connecting line if it's not the last stage
             if (i < stages.length - 1) {
-                VBox connection = new VBox(); // Connecting line between stages
+                VBox connection = new VBox();
                 connection.setStyle("-fx-background-color: white; -fx-width: 2px; -fx-height: 20px;");
                 graph.getChildren().add(connection);
             }
@@ -84,23 +98,30 @@ public class IdeaTrackingController {
         return graph; // Return the completed roadmap graph
     }
 
-    private void updateRoadmapProgress(VBox graph, String selectedIdea) {
-        // Mock data for progress; replace with real data from a database or backend
-        int completedStages = switch (selectedIdea) {
-            case "Idea 1" -> 3;
-            case "Idea 2" -> 5;
-            case "Idea 3" -> 7;
-            default -> 0;
-        };
+    private void updateRoadmapProgress(int ideaStatus) {
+        int stageIndex = 1; // Status starts from 1
 
-        int stageIndex = 0;
-
-        for (var node : graph.getChildren()) {
-            if (node instanceof HBox stageNode) { // Ensure it's an HBox containing a stage
+        for (var node : roadmapGraph.getChildren()) {
+            if (node instanceof HBox stageNode) {
                 CheckBox checkbox = (CheckBox) stageNode.getChildren().get(0); // First child is the checkbox
-                checkbox.setSelected(stageIndex < completedStages);
+                if (stageIndex <= ideaStatus) {
+                    checkbox.setSelected(true);
+                } else {
+                    checkbox.setSelected(false);
+                }
                 stageIndex++;
             }
         }
     }
-} // <-- Make sure this closing brace exists
+
+    private int extractIdeaID(String selectedItem) {
+        // Assumes the format is "ID: <ideaID> - <ideaName>"
+        try {
+            String[] parts = selectedItem.split(" - ")[0].split(": ");
+            return Integer.parseInt(parts[1].trim());
+        } catch (Exception e) {
+            System.err.println("Failed to extract ideaID: " + e.getMessage());
+            return -1;
+        }
+    }
+}
