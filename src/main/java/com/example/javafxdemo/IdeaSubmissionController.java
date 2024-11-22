@@ -45,6 +45,7 @@ public class IdeaSubmissionController implements Initializable{
         String category = categoryDropdown.getValue();
         String formula = formulaField.getText();
         String price = priceField.getText();
+        String userid = UserSession.getInstance().getUserid();
 
         // Basic Validation
         if (drugName.isEmpty() || description.isEmpty() || category == null ||
@@ -52,6 +53,9 @@ public class IdeaSubmissionController implements Initializable{
             showAlert("Validation Error", "Please fill in all fields.");
             return;
         }
+        //boolean isValidUser = DataOperations.verifyUserCredentials(username, password);
+
+        boolean isValidIdea = DataOperations.insertIdea(drugName,description,category,formula, Double.parseDouble(price),userid);
 
         // Here you would typically save to database
         // For now, just print to console
@@ -61,6 +65,7 @@ public class IdeaSubmissionController implements Initializable{
         System.out.println("Category: " + category);
         System.out.println("Formula: " + formula);
         System.out.println("Estimated Price: " + price);
+
 
         // Show success message
         showAlert("Success", "Drug idea submitted successfully!");

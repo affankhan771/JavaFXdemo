@@ -1,9 +1,20 @@
 package com.example.javafxdemo;
 import java.io.IOException;
+import java.sql.Connection;
 import java.util.List;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
-
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.stage.Stage;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -24,10 +35,44 @@ public class LoginPage extends Application {
                     // Login Button Action
                     boolean isValidUser = DataOperations.verifyUserCredentials(username, password);
                     if (isValidUser) {
+                        // Retrieve additional user info (email and grade)
+                        try (Connection conn = DatabaseConnection.connect();
+                             PreparedStatement pstmt = conn.prepareStatement("SELECT email, grade FROM users WHERE userid = ?")) {
+
+                            pstmt.setString(1, username);
+                            ResultSet rs = pstmt.executeQuery();
+
+                            if (rs.next()) {
+                                String email = rs.getString("email");
+                                int grade = rs.getInt("grade");
+
+                                // Set the user session
+                                UserSession.createSession(username, email, grade);
+
+                                // Open the dashboard
+                                openDashboard(stage);
+                            } else {
+                                Label messageLabel = new Label();
+                                messageLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+                                messageLabel.setText("User data retrieval failed.");
+                            }
+
+                        } catch (SQLException ex) {
+                            Label messageLabel = new Label();
+                            messageLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+                            messageLabel.setText("Database error: " + ex.getMessage());
+                        }
+                    } else {
+                        Label messageLabel = new Label();
+                        messageLabel.setStyle("-fx-text-fill: red; -fx-font-size: 14px;");
+                        messageLabel.setText("Invalid credentials. Please try again.");
+                    }
+                    /*if (isValidUser) {
+                        //System.out.println("Login Succedded Here \n");
                         openDashboard(stage);
                     } else {
                         System.out.println("Invalid credentials. Please try again.");
-                    }
+                    }*/
                 },
                 stage -> {
                     // Signup Button Action (for now, just a placeholder)
@@ -126,7 +171,7 @@ public class LoginPage extends Application {
     }*/
 
 
-    //private ApprovalView approvalView = new ApprovalView();
+    private ApprovalView approvalView = new ApprovalView();
     private DashboardView dashboardView = new DashboardView();
     private void openDashboard(Stage primaryStage) {
         dashboardView.openDashboard(primaryStage, getNavBar(primaryStage), getSidebar(primaryStage));
@@ -159,13 +204,13 @@ public class LoginPage extends Application {
 
         } else if (optionIndex == 2) {
             // Use ScrollPane to make ideas scrollable
-            ScrollPane scrollPane = new ScrollPane();
+            /*ScrollPane scrollPane = new ScrollPane();
             scrollPane.setContent(createApprovalBox(primaryStage));
             scrollPane.setFitToWidth(true); // Ensure content fits horizontally
             scrollPane.setStyle("-fx-background-color: black;");
 
-            contentArea.getChildren().add(scrollPane);
-            //approvalView.showApprovalScreen(primaryStage, getNavBar(primaryStage), getSidebar(primaryStage));
+            contentArea.getChildren().add(scrollPane);*/
+            approvalView.showApprovalScreen(primaryStage, getNavBar(primaryStage), getSidebar(primaryStage));
         } else {
             // Default content for other options
             Label screenLabel = new Label("Content for option " + (optionIndex + 1));
