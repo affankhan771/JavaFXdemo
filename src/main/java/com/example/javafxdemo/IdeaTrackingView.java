@@ -1,4 +1,6 @@
+/*
 package com.example.javafxdemo;
+
 
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -114,6 +116,27 @@ public class IdeaTrackingView {
                 CheckBox checkbox = (CheckBox) stageNode.getChildren().get(0); // Checkbox is the first child
                 checkbox.setSelected(i / 2 < completedStages); // Divide by 2 since connecting lines are counted
             }
+        }
+    }
+}*/
+
+package com.example.javafxdemo;
+
+import javafx.fxml.FXMLLoader;
+import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
+public class IdeaTrackingView {
+
+    public VBox createIdeaTrackingScreen(Stage primaryStage) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/IdeaTrackingView.fxml"));
+            return loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new RuntimeException("Failed to load IdeaTrackingView.fxml", e);
         }
     }
 }

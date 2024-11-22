@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/11.0.2"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.example.javafxdemo.IdeaTrackingController"
+      alignment="TOP_CENTER" spacing="20" style="-fx-background-color: black; -fx-padding: 20px;">
+
+    <!-- Title -->
+    <Label text="Idea Tracking" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: white;" />
+
+    <!-- Dropdown for Selecting an Idea -->
+    <Label text="Select Idea:" style="-fx-text-fill: white;" />
+    <ComboBox fx:id="ideaDropdown" promptText="Choose an idea to track" />
+
+    <!-- Roadmap Graph Container -->
+    <ScrollPane fx:id="roadmapContainer" style="-fx-background-color: black; -fx-border-color: #555555; -fx-border-width: 2px;" />
+</VBox>
