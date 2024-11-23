@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.javafxdemo.ApprovalsScreenController"
+            style="-fx-padding: 20; -fx-background-color: #333333;">
+
+    <!-- Header Section -->
+    <top>
+        <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #222222;">
+            <Label text="Idea Approval Dashboard" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <Label text="Review and approve or disapprove submitted ideas." style="-fx-font-size: 14; -fx-text-fill: white;" />
+            <HBox spacing="10">
+                <TextField fx:id="searchBar" promptText="Search by title, ID, or creator" />
+                <ComboBox fx:id="filterSortDropdown" promptText="Filter/Sort (e.g., Pending)" />
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Main Content Section -->
+    <center>
+        <SplitPane style="-fx-background-color: #333333;" dividerPositions="0.3">
+
+            <!-- Left Panel: List of Ideas -->
+            <VBox fx:id="ideaListPanel" spacing="10" style="-fx-padding: 10;">
+                <Label text="Ideas" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;" />
+                <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent;">
+                    <VBox fx:id="ideaCardsContainer" spacing="10" style="-fx-padding: 10;" />
+                </ScrollPane>
+            </VBox>
+
+            <!-- Right Panel: Idea Details -->
+            <VBox fx:id="ideaDetailsPanel" spacing="10" style="-fx-padding: 10; -fx-background-color: #444444;">
+                <Label text="Idea Details" fx:id="ideaTitleLabel" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;" />
+                <Label fx:id="ideaDetailedDescription" wrapText="true" style="-fx-font-size: 14; -fx-text-fill: white;" />
+                <Label fx:id="ideaCreatorDetails" wrapText="true" style="-fx-font-size: 14; -fx-text-fill: white;" />
+
+                <!-- Action Buttons -->
+                <HBox spacing="10" style="-fx-alignment: bottom-right;">
+                    <Button text="Approve" fx:id="approveButton" style="-fx-background-color: green; -fx-text-fill: white;" />
+                    <Button text="Disapprove" fx:id="disapproveButton" style="-fx-background-color: red; -fx-text-fill: white;" />
+                </HBox>
+                <TextArea fx:id="commentBox" promptText="Add comments (required if disapproving)" wrapText="true" style="-fx-font-size: 14;" />
+            </VBox>
+        </SplitPane>
+    </center>
+
+</BorderPane>

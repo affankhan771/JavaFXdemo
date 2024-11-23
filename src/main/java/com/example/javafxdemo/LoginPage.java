@@ -171,7 +171,7 @@ public class LoginPage extends Application {
     }*/
 
 
-    private ApprovalView approvalView = new ApprovalView();
+
     private DashboardView dashboardView = new DashboardView();
     private void openDashboard(Stage primaryStage) {
         dashboardView.openDashboard(primaryStage, getNavBar(primaryStage), getSidebar(primaryStage));
@@ -193,25 +193,97 @@ public class LoginPage extends Application {
         contentArea.setAlignment(Pos.CENTER);
         contentArea.setStyle("-fx-background-color: black; -fx-padding: 20px;");
 
-        if (optionIndex == 0) {  // Option 1 - Idea Submission screen
+        if (optionIndex == 1) {  // Option 1 - Idea Submission screen
             // Create instance of IdeaSubmissionView and use it
             IdeaSubmissionView ideaSubmissionView = new IdeaSubmissionView();
             contentArea.getChildren().add(ideaSubmissionView.createIdeaSubmissionForm(primaryStage));
-        } else if (optionIndex == 1) {
+        } else if (optionIndex == 2) {
            // contentArea.getChildren().add(createIdeaTrackingScreen(primaryStage));
             IdeaTrackingView ideaTrackingView = new IdeaTrackingView();
             contentArea.getChildren().add(ideaTrackingView.createIdeaTrackingScreen(primaryStage));
 
-        } else if (optionIndex == 2) {
+        } else if (optionIndex == 3) {
             // Use ScrollPane to make ideas scrollable
-            /*ScrollPane scrollPane = new ScrollPane();
+            ScrollPane scrollPane = new ScrollPane();
             scrollPane.setContent(createApprovalBox(primaryStage));
             scrollPane.setFitToWidth(true); // Ensure content fits horizontally
             scrollPane.setStyle("-fx-background-color: black;");
 
-            contentArea.getChildren().add(scrollPane);*/
-            approvalView.showApprovalScreen(primaryStage, getNavBar(primaryStage), getSidebar(primaryStage));
-        } else {
+            contentArea.getChildren().add(scrollPane);
+           // approvalView.showApprovalScreen(primaryStage, getNavBar(primaryStage), getSidebar(primaryStage));
+        } else if (optionIndex == 4) { // Regulatory Compliance
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/RegulatoryCompliance.fxml"));
+            VBox regulatoryComplianceScreen;
+            try {
+                regulatoryComplianceScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException("Error loading Regulatory Compliance screen: " + e.getMessage(), e);
+            }
+
+            // Wrap it in a ScrollPane for scrolling
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setContent(regulatoryComplianceScreen);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setStyle("-fx-background-color: black;");
+
+            // Add to the content area
+            contentArea.getChildren().add(scrollPane);
+        }else if (optionIndex == 5) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/ApprovalsScreen.fxml"));
+            BorderPane approvalsScreen = null;
+            try {
+                approvalsScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Add to the content area
+            contentArea.getChildren().add(approvalsScreen);
+        }else if (optionIndex == 0) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/DashboardScreen.fxml"));
+            BorderPane dashboardScreen = null;
+            try {
+                dashboardScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Add to the content area
+            contentArea.getChildren().add(dashboardScreen);
+        } else if (optionIndex == 6) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/TestingScreen.fxml"));
+            AnchorPane testingScreen = null;
+            try {
+                testingScreen = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Error loading Testing Screen: " + e.getMessage(), e);
+            }
+
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setContent(testingScreen);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setStyle("-fx-background-color: black;");
+            contentArea.getChildren().add(scrollPane);
+
+        } /*else if (optionIndex == 7) { // Sales Forecast screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/SalesForecastScreen.fxml"));
+            AnchorPane salesForecastScreen = null;
+            try {
+                salesForecastScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException("Error loading Sales Forecast screen: " + e.getMessage(), e);
+            }
+
+            // Wrap it in a ScrollPane for scrolling
+            ScrollPane scrollPane = new ScrollPane();
+            scrollPane.setContent(salesForecastScreen);
+            scrollPane.setFitToWidth(true);
+            scrollPane.setStyle("-fx-background-color: black;");
+
+            // Add to the content area
+            contentArea.getChildren().add(scrollPane);
+        }*/ else {
             // Default content for other options
             Label screenLabel = new Label("Content for option " + (optionIndex + 1));
             screenLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");
@@ -474,24 +546,7 @@ public class LoginPage extends Application {
         return ideasBox;
     }
 
-    private void showApprovalScreen(Stage primaryStage) {
-            // Main layout for the approval screen
-            BorderPane layout = new BorderPane();
-            layout.setTop(getNavBar(primaryStage)); // Use the existing NavBar
-            layout.setLeft(getSidebar(primaryStage)); // Use the existing Sidebar
 
-            // Wrap the returned VBox in a ScrollPane
-            ScrollPane scrollPane = new ScrollPane();
-            scrollPane.setContent(createApprovalBox(primaryStage)); // Add the VBox returned by createApprovalBox
-            scrollPane.setFitToWidth(true); // Ensure the content fits horizontally
-            scrollPane.setStyle("-fx-background: #333333;");
-
-            layout.setCenter(scrollPane); // Set the ScrollPane in the center of the layout
-
-            // Scene and Stage setup
-            Scene approvalScene = new Scene(layout, 900, 600);
-            primaryStage.setScene(approvalScene);
-        }
 
 
 

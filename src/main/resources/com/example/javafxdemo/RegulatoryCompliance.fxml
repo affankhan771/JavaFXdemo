@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.example.javafxdemo.RegulatoryComplianceController"
+      spacing="20" style="-fx-padding: 20; -fx-background-color: #333333;">
+
+    <!-- Header Section -->
+    <VBox spacing="10">
+        <Label text="Regulatory Compliance Checklist" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: white;" />
+        <Label text="Please provide details to ensure compliance with regulatory standards."
+               style="-fx-font-size: 14; -fx-text-fill: white;" />
+        <Button text="Save" fx:id="saveButton" style="-fx-background-color: #0055FF; -fx-text-fill: white;" />
+    </VBox>
+
+    <!-- Form Section -->
+    <Accordion fx:id="formAccordion" style="-fx-background-color: #444444; -fx-text-fill: white;">
+        <panes>
+            <!-- Drug Identification -->
+            <TitledPane text="Drug Identification" expanded="false">
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <TextField fx:id="drugNameField" promptText="Drug Name" />
+                    <TextField fx:id="drugCodeField" promptText="Drug Code or ID" />
+                    <ComboBox fx:id="countryDropdown" promptText="Country/Region of Regulation" />
+                </VBox>
+            </TitledPane>
+
+            <!-- Safety and Efficacy -->
+            <TitledPane text="Safety and Efficacy" expanded="false">
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <CheckBox fx:id="safetyAssessmentToggle" text="Safety assessment conducted?" />
+                    <CheckBox fx:id="clinicalTrialsToggle" text="Clinical trials conducted?" />
+                    <Button text="Upload Relevant Documents" fx:id="uploadSafetyDocsButton" />
+                </VBox>
+            </TitledPane>
+
+            <!-- Manufacturing and Quality Control -->
+            <TitledPane text="Manufacturing and Quality Control" expanded="false">
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <ComboBox fx:id="gmpComplianceDropdown" promptText="GMP Compliance (Yes/No/NA)" />
+                    <TextField fx:id="certificateNumberField" promptText="Certificate Number" />
+                    <Button text="Attach Certification Documents" fx:id="uploadCertDocsButton" />
+                </VBox>
+            </TitledPane>
+
+            <!-- Packaging and Labeling -->
+            <TitledPane text="Packaging and Labeling" expanded="false">
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <CheckBox fx:id="packagingApprovedToggle" text="Packaging materials approved for pharmaceutical use?" />
+                    <CheckBox fx:id="labelContainsInfoToggle" text="Label contains all required information?" />
+                    <TextArea fx:id="additionalCommentsField" promptText="Additional Comments" wrapText="true" />
+                </VBox>
+            </TitledPane>
+
+            <!-- Distribution and Marketing -->
+            <TitledPane text="Distribution and Marketing" expanded="false">
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <CheckBox fx:id="productApprovedToggle" text="Product approved for distribution in the target market?" />
+                    <TextField fx:id="approvalNumberField" promptText="Approval Number" />
+                </VBox>
+            </TitledPane>
+
+            <!-- Compliance Declaration -->
+            <TitledPane text="Compliance Declaration" expanded="false">
+                <VBox spacing="10" style="-fx-padding: 10;">
+                    <CheckBox fx:id="agreeTermsCheckbox" text="I agree to the terms and conditions." />
+                    <CheckBox fx:id="finalComplianceToggle" text="Final compliance confirmation" />
+                </VBox>
+            </TitledPane>
+        </panes>
+    </Accordion>
+
+    <!-- Footer Section -->
+    <HBox spacing="10" alignment="CENTER">
+        <Button text="Submit" fx:id="submitButton" style="-fx-background-color: green; -fx-text-fill: white;" />
+        <Button text="Save Draft" fx:id="saveDraftButton" style="-fx-background-color: orange; -fx-text-fill: white;" />
+    </HBox>
+</VBox>

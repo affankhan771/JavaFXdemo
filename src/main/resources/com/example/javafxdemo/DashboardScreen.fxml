@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.chart.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.javafxdemo.DashboardScreenController"
+            style="-fx-padding: 20; -fx-background-color: #f4f4f4;">
+
+    <!-- Header Section -->
+    <top>
+        <HBox spacing="20" style="-fx-padding: 10; -fx-background-color: #333333; -fx-alignment: center-left;">
+            <Label text="Idea Management System Dashboard" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;" />
+            <Region fx:id="spacer" HBox.hgrow="ALWAYS" />
+            <MenuButton text="User Menu" style="-fx-background-color: transparent; -fx-text-fill: white;">
+                <MenuItem text="Account Settings" />
+                <MenuItem text="Log Out" />
+            </MenuButton>
+        </HBox>
+    </top>
+
+    <!-- Main Content -->
+    <center>
+        <VBox spacing="20" style="-fx-padding: 10;">
+
+            <!-- Key Metrics Section -->
+            <HBox spacing="20">
+                <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #ffd966; -fx-border-radius: 10; -fx-background-radius: 10;">
+                    <Label text="Pending Approvals" style="-fx-font-size: 18; -fx-font-weight: bold;" />
+                    <Label fx:id="pendingApprovalsCount" text="15" style="-fx-font-size: 36; -fx-font-weight: bold;" />
+                    <Label text="Ideas waiting for your review" style="-fx-font-size: 14;" />
+                </VBox>
+                <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #66ccff; -fx-border-radius: 10; -fx-background-radius: 10;">
+                    <Label text="Total Ideas Submitted" style="-fx-font-size: 18; -fx-font-weight: bold;" />
+                    <Label fx:id="totalIdeasCount" text="120" style="-fx-font-size: 36; -fx-font-weight: bold;" />
+                    <Label text="Ideas you’ve submitted so far" style="-fx-font-size: 14;" />
+                </VBox>
+                <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #99cc99; -fx-border-radius: 10; -fx-background-radius: 10;">
+                    <Label text="Approved Ideas" style="-fx-font-size: 18; -fx-font-weight: bold;" />
+                    <Label fx:id="approvedIdeasCount" text="85" style="-fx-font-size: 36; -fx-font-weight: bold;" />
+                    <Label text="Ideas approved" style="-fx-font-size: 14;" />
+                </VBox>
+            </HBox>
+
+            <!-- Graphical Representation Section -->
+            <HBox spacing="20">
+                <PieChart fx:id="ideasPieChart" style="-fx-padding: 20; -fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10;" />
+                <BarChart fx:id="ideasBarChart" title="Ideas Per Month"
+                          style="-fx-padding: 20; -fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10;">
+                    <xAxis>
+                        <CategoryAxis fx:id="barChartXAxis" label="Months" />
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="barChartYAxis" label="Ideas" />
+                    </yAxis>
+                </BarChart>
+            </HBox>
+
+            <!-- Action Buttons Section -->
+            <HBox spacing="20" style="-fx-alignment: center;">
+                <Button text="Submit a New Idea" fx:id="submitIdeaButton" style="-fx-background-color: #66ccff; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20;" />
+                <Button text="Pending Approvals" fx:id="pendingApprovalsButton" style="-fx-background-color: #ffd966; -fx-text-fill: black; -fx-font-size: 16; -fx-padding: 10 20;" />
+                <Button text="Regulatory Compliance" fx:id="regulatoryComplianceButton" style="-fx-background-color: #99cc99; -fx-text-fill: black; -fx-font-size: 16; -fx-padding: 10 20;" />
+            </HBox>
+
+        </VBox>
+    </center>
+
+    <!-- Footer Section -->
+    <bottom>
+        <Label text="Total ideas in the system: 500 | Approved: 300" style="-fx-padding: 10; -fx-background-color: #dddddd;" />
+    </bottom>
+
+</BorderPane>

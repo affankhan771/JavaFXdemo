@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.geometry.Pos?>
+
+<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxdemo.TestingScreenController">
+    <!-- Header Section -->
+    <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20px;">
+        <Label text="Testing Screen" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+        <Hyperlink text="Test History" onAction="#handleTestHistory"/>
+    </VBox>
+
+    <!-- Main Content Area -->
+    <HBox spacing="30" alignment="CENTER" layoutX="50" layoutY="100">
+        <!-- Left Panel: Test Input -->
+        <VBox spacing="20" prefWidth="400">
+            <TextField fx:id="testNameField" promptText="Test Name/Title" />
+            <TextArea fx:id="testDescriptionArea" promptText="Test Description" prefHeight="150" />
+            <TextField fx:id="testParamsField" promptText="Test Parameters (e.g., Dosage, Duration)" />
+            <Button text="Submit Test" onAction="#handleSubmitTest" style="-fx-background-color: green; -fx-text-fill: white;" />
+        </VBox>
+
+        <!-- Right Panel: Test Status -->
+        <VBox spacing="20" prefWidth="300">
+            <Label fx:id="testStatusLabel" text="Status: Test Not Started" style="-fx-font-weight: bold;"/>
+            <ProgressBar fx:id="progressBar" progress="0" />
+            <Label fx:id="testOutcomeLabel" text="Outcome: N/A" style="-fx-font-weight: bold;"/>
+        </VBox>
+    </HBox>
+
+    <!-- Test History Section (Expandable) -->
+    <VBox fx:id="historySection" spacing="10" visible="false" layoutX="50" layoutY="400">
+        <Label text="Test History" style="-fx-font-size: 20px;"/>
+        <ListView fx:id="testHistoryList" prefHeight="200"/>
+    </VBox>
+
+    <!-- Footer Section -->
+    <HBox alignment="CENTER" spacing="10" layoutX="50" layoutY="620">
+        <Label text="Ensure you provide accurate parameters for the test" style="-fx-font-size: 12px;"/>
+    </HBox>
+</AnchorPane>

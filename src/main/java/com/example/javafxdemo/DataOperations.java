@@ -50,9 +50,9 @@ public class DataOperations {
     public static boolean insertIdea(String drugName, String description, String category,
                                      String formula, double price, String submittedBy) {
         int ideaID = getNextIdeaID(); // Get the next ideaID
-        String userid = "aw";
+        int status = 1; // Set status to 1 for new ideas
 
-        String sql = "INSERT INTO ideas(ideaID, drugName, description, category, chemicalFormula, price, submittedBy) VALUES(?, ?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO ideas(ideaID, drugName, description, category, chemicalFormula, price, submittedBy, status) VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
         try (Connection conn = DatabaseConnection.connect();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -64,6 +64,7 @@ public class DataOperations {
             pstmt.setString(5, formula);
             pstmt.setDouble(6, price);
             pstmt.setString(7, submittedBy);
+            pstmt.setInt(8, status); // Set status
 
             pstmt.executeUpdate();
             System.out.println("Idea inserted successfully with ideaID: " + ideaID);
@@ -74,6 +75,7 @@ public class DataOperations {
             return false;
         }
     }
+
 
     public static int getNextIdeaID() {
         String sql = "SELECT MAX(ideaID) FROM ideas";
@@ -167,11 +169,12 @@ public class DataOperations {
                         rs.getString("category"),
                         rs.getString("chemicalFormula"),
                         rs.getString("price"),
-                        rs.getString("submittedBy")
+                        rs.getString("submittedBy"),
+                        rs.getInt("status") // Retrieve status
                 );
                 ideas.add(idea);
 
-                // If no approval record exists, insert one with status 'Pending'
+                // Check for approval record and insert if necessary
                 if (!ideaApprovalExists(idea.getIdeaId())) {
                     insertIdeaApproval(idea.getIdeaId(), "Pending");
                 }
@@ -183,6 +186,7 @@ public class DataOperations {
         return ideas;
     }
 
+
     private static boolean ideaApprovalExists(int ideaID) {
         String sql = "SELECT 1 FROM IdeaApprovals WHERE ideaID = ?";
         try (Connection conn = DatabaseConnection.connect();
@@ -193,6 +197,79 @@ public class DataOperations {
         } catch (SQLException e) {
             System.err.println("Failed to check if idea approval exists: " + e.getMessage());
             return false;
+        }
+    }
+    public static List<Idea> getAllIdeas() {
+        List<Idea> ideas = new ArrayList<>();
+        String sql = "SELECT * FROM ideas";
+        try (Connection conn = DatabaseConnection.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                Idea idea = new Idea(
+                        rs.getInt("ideaID"),
+                        rs.getString("drugName"),
+                        rs.getString("description"),
+                        rs.getString("category"),
+                        rs.getString("chemicalFormula"),
+                        rs.getString("price"),
+                        rs.getString("submittedBy"),
+                        rs.getInt("status")
+                );
+                ideas.add(idea);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to retrieve ideas: " + e.getMessage());
+        }
+        return ideas;
+    }
+
+    public static Idea getIdeaById(int ideaID) {
+        String sql = "SELECT * FROM ideas WHERE ideaID = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, ideaID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new Idea(
+                        rs.getInt("ideaID"),
+                        rs.getString("drugName"),
+                        rs.getString("description"),
+                        rs.getString("category"),
+                        rs.getString("chemicalFormula"),
+                        rs.getString("price"),
+                        rs.getString("submittedBy"),
+                        rs.getInt("status")
+                );
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to retrieve idea: " + e.getMessage());
+        }
+        return null; // Idea not found
+    }
+    public static int getIdeaStatusById(int ideaID) {
+        String sql = "SELECT status FROM ideas WHERE ideaID = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, ideaID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt("status");
+            } else {
+                System.err.println("Idea with ID " + ideaID + " not found.");
+                return -1;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to retrieve idea status: " + e.getMessage());
+            return -1;
         }
     }
 
