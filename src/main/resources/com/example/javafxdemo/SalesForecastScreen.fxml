@@ -1,93 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.chart.BarChart?>
-<?import javafx.scene.chart.XYChart?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.VBox?>
-<?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
-<?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TextField?>
-<?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
+<?import javafx.geometry.Insets?>
 
 <?import javafx.collections.FXCollections?>
-<?import javafx.scene.control.ChoiceBox?>
 <?import java.lang.String?>
-<AnchorPane xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxdemo.SalesForecastController">
+<BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="com.example.javafxdemo.SalesForecastController" style="-fx-padding: 20px;">
     <!-- Header Section -->
-    <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #f0f0f0; -fx-padding: 20px;">
-        <Label text="Sales Forecast" style="-fx-font-size: 36px; -fx-font-weight: bold;"/>
-        <HBox spacing="20" alignment="CENTER">
-            <Button text="Home" fx:id="homeButton" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
-            <Button text="Sales History" fx:id="salesHistoryButton" style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
+    <top>
+        <HBox spacing="20" alignment="CENTER" style="-fx-background-color: lightblue; -fx-padding: 10px;">
+            <Label text="Sales Forecast" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
+            <Pane HBox.hgrow="ALWAYS"/>
+            <Button text="Home" onAction="#navigateToHome" style="-fx-font-size: 14px;"/>
+            <Button text="Sales History" onAction="#navigateToSalesHistory" style="-fx-font-size: 14px;"/>
         </HBox>
-    </VBox>
+    </top>
 
     <!-- Main Content Area -->
-    <HBox spacing="40" AnchorPane.topAnchor="100.0" AnchorPane.leftAnchor="20.0" AnchorPane.rightAnchor="20.0">
-        <!-- Left Side (Input Section) -->
-        <VBox spacing="10" style="-fx-background-color: #ffffff; -fx-padding: 20px;" VBox.vgrow="ALWAYS">
-            <Label text="Idea ID"/>
-            <ComboBox fx:id="ideaIdComboBox"/>
-            <Label text="Market Size"/>
-            <TextField fx:id="marketSizeTextField"/>
-            <Label text="Expected Growth Rate"/>
-            <TextField fx:id="growthRateTextField"/>
-            <Label text="Price Per Unit"/>
-            <TextField fx:id="pricePerUnitTextField"/>
-            <Label text="Sales Period"/>
-            <ChoiceBox fx:id="forecastPeriodChoiceBox">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="1 Year"/>
-                        <String fx:value="2 Years"/>
-                        <String fx:value="5 Years"/>
-                    </FXCollections>
-                </items>
-            </ChoiceBox>
-            <Label text="Seasonality Factor"/>
-            <ChoiceBox fx:id="seasonalityChoiceBox">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Winter"/>
-                        <String fx:value="Summer"/>
-                        <String fx:value="No Seasonality"/>
-                    </FXCollections>
-                </items>
-            </ChoiceBox>
-            <Label text="Marketing Budget"/>
-            <TextField fx:id="marketingBudgetTextField"/>
-            <Button text="Generate Forecast" fx:id="generateForecastButton" style="-fx-background-color: #4CAF50; -fx-text-fill: white;"/>
-        </VBox>
-
-        <!-- Right Side (Results Section) -->
-        <VBox spacing="20" style="-fx-background-color: #ffffff; -fx-padding: 20px;" VBox.vgrow="ALWAYS">
-            <Label text="Sales Forecast Result" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
-            <Label text="Total Forecasted Sales:" style="-fx-font-size: 18px;"/>
-            <Label fx:id="totalSalesLabel" style="-fx-font-size: 22px; -fx-font-weight: bold; color: #4CAF50;"/>
-
-            <Label text="Sales Breakdown by Month/Quarter"/>
-            <VBox style="-fx-background-color: #f9f9f9; -fx-padding: 10px;">
-                <Label fx:id="forecastBreakdownLabel"/>
+    <center>
+        <HBox spacing="20" style="-fx-padding: 20px; -fx-background-color: white;">
+            <!-- Forecast Input Section -->
+            <VBox spacing="10" style="-fx-padding: 10px; -fx-background-color: #f9f9f9; -fx-border-color: lightgray; -fx-border-width: 1;">
+                <Label text="Forecast Input" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <HBox spacing="10">
+                    <Label text="Idea ID:"/>
+                    <ComboBox fx:id="ideaIdField" promptText="Select Idea ID"/>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Market Size:"/>
+                    <TextField fx:id="marketSizeField" promptText="Enter Market Size"/>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Expected Growth Rate:"/>
+                    <TextField fx:id="growthRateField" promptText="Enter Growth Rate (%)"/>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Price Per Unit:"/>
+                    <TextField fx:id="pricePerUnitField" promptText="Enter Price"/>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Sales Period:"/>
+                    <ComboBox fx:id="salesPeriodField" promptText="Select Period">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="1 Year"/>
+                                <String fx:value="2 Years"/>
+                                <String fx:value="5 Years"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Seasonality Factor:"/>
+                    <ComboBox fx:id="seasonalityField" promptText="Select Seasonality">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Winter"/>
+                                <String fx:value="Summer"/>
+                                <String fx:value="No Seasonality"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </HBox>
+                <HBox spacing="10">
+                    <Label text="Marketing Budget:"/>
+                    <TextField fx:id="marketingBudgetField" promptText="Enter Budget"/>
+                </HBox>
+                <Button text="Generate Forecast" onAction="#generateForecast"
+                        style="-fx-background-color: green; -fx-text-fill: white; -fx-font-size: 14px;"/>
             </VBox>
 
-            <Label text="Sales Chart"/>
-            <BarChart fx:id="salesChart">
-                <XAxis fx:id="xAxis" label="Time"/>
-                <YAxis fx:id="yAxis" label="Sales"/>
-                <Series fx:id="forecastSeries"/>
-            </BarChart>
+            <!-- Forecast Results Section -->
+            <VBox spacing="10" style="-fx-padding: 10px; -fx-background-color: #f9f9f9; -fx-border-color: lightgray; -fx-border-width: 1;">
+                <Label text="Forecast Results" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+                <Label fx:id="totalForecastLabel" text="Total Forecasted Sales: $0.00"
+                       style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+                <TableView fx:id="forecastBreakdownTable" style="-fx-padding: 10px;">
+                    <columns>
+                        <TableColumn fx:id="timePeriodColumn" text="Month/Quarter"/>
+                        <TableColumn fx:id="expectedSalesColumn" text="Expected Sales"/>
+                        <TableColumn fx:id="cumulativeSalesColumn" text="Cumulative Sales"/>
+                    </columns>
+                </TableView>
+                <BarChart fx:id="salesForecastChart" title="Sales Forecast" style="-fx-pref-height: 200px;">
+                    <xAxis>
+                        <CategoryAxis fx:id="xAxis"/>
+                    </xAxis>
+                    <yAxis>
+                        <NumberAxis fx:id="yAxis"/>
+                    </yAxis>
+                </BarChart>
+                <HBox spacing="10" alignment="CENTER">
+                    <Label text="Confidence Level:"/>
+                    <ProgressBar fx:id="confidenceMeter" progress="0.0" style="-fx-pref-width: 200px;"/>
+                </HBox>
+                <Button text="Save Forecast" onAction="#saveForecast"
+                        style="-fx-background-color: blue; -fx-text-fill: white; -fx-font-size: 14px;"/>
+            </VBox>
+        </HBox>
+    </center>
 
-            <Label text="Forecast Confidence Level"/>
-            <ProgressBar fx:id="confidenceLevelProgress" progress="0.5"/>
-
-            <Button text="Save Forecast" fx:id="saveForecastButton" style="-fx-background-color: #2196F3; -fx-text-fill: white;"/>
-        </VBox>
-    </HBox>
-
-    <!-- Footer Section (Optional) -->
-    <VBox alignment="CENTER" style="-fx-background-color: #f0f0f0; -fx-padding: 10px;">
-        <Label text="Forecast results are estimates and may change based on market dynamics." style="-fx-font-size: 12px;"/>
-    </VBox>
-</AnchorPane>
+    <!-- Footer Section -->
+    <bottom>
+        <HBox alignment="CENTER" style="-fx-padding: 10px; -fx-background-color: lightgray;">
+            <Label text="Forecast results are estimates and may change based on market dynamics."
+                   style="-fx-font-size: 12px; -fx-text-fill: gray;"/>
+        </HBox>
+    </bottom>
+</BorderPane>

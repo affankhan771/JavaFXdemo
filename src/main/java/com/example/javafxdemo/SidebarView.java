@@ -25,7 +25,7 @@ public class SidebarView {
                 "Regulatory Compliance",
                 "Approvals new",
                 "Testing",
-                "New Feature 3",
+                "Sales Forecast",
                 "New Feature 4"
         };
 
