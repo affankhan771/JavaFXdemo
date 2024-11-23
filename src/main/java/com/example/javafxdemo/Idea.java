@@ -1,5 +1,7 @@
 package com.example.javafxdemo;
 
+import java.time.LocalDate;
+
 // A simple class to hold Idea details
 class Idea {
     private int id;
@@ -10,6 +12,7 @@ class Idea {
     private String estimatedPrice;
     private String submittedby;
     private int status; // New field
+   // private LocalDate submitDate;
 
     public Idea(int id,String name, String description, String category, String chemicalFormula, String estimatedPrice,String submittedby,int status) {
         this.name = name;
@@ -48,5 +51,6 @@ class Idea {
     public void setIdeaId(int id) {this.id = id;}
     public void setDescription(String description) {this.description = description;}
     public void setCategory(String category) {this.category = category;}
+   // public LocalDate getSubmitDate() { return submitDate; }
 }
 

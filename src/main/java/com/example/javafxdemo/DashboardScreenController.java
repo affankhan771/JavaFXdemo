@@ -42,29 +42,25 @@ public class DashboardScreenController {
     // Initialize method should be properly closed
     public void initialize() {
         // Check if BarChart and axes are properly initialized
-        if (ideasBarChart == null || barChartXAxis == null || barChartYAxis == null) {
-            System.out.println("BarChart or Axes are not initialized properly");
-            return; // Prevent any further actions if initialization fails
-        }
-
-        // Sample Data for BarChart
-        XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
-        dataSeries.setName("Ideas Per Month");
-
-        // Add data points to the series
-        dataSeries.getData().add(new XYChart.Data<>("July", 10));
-        dataSeries.getData().add(new XYChart.Data<>("August", 20));
-        dataSeries.getData().add(new XYChart.Data<>("September", 30));
-        dataSeries.getData().add(new XYChart.Data<>("October", 40));
-        dataSeries.getData().add(new XYChart.Data<>("November", 50));
+        setupBarChart();
 
         // Add the series to the BarChart
-        ideasBarChart.getData().add(dataSeries);
+        //ideasBarChart.getData().add(dataSeries);
 
         // Set up sample data for metrics
-        pendingApprovalsCount.setText("15");
+                int totalIdeas = DataOperations.getTotalIdeasCount();
+        int approvedIdeas = DataOperations.getApprovedIdeasCount();
+        int rejectedIdeas = DataOperations.getRejectedIdeasCount();
+        int pendingApprovals = DataOperations.getPendingApprovalsCount();
+
+        totalIdeasCount.setText(String.valueOf(totalIdeas));
+        approvedIdeasCount.setText(String.valueOf(approvedIdeas));
+       // rejectedIdeasCount.setText(String.valueOf(rejectedIdeas));
+        pendingApprovalsCount.setText(String.valueOf(pendingApprovals));
+
+        /*pendingApprovalsCount.setText("15");
         totalIdeasCount.setText("120");
-        approvedIdeasCount.setText("85");
+        approvedIdeasCount.setText("85");*/
 
         // Set up the PieChart (You can add similar checks for PieChart as needed)
 //        ideasPieChart.getData().addAll(
@@ -85,6 +81,28 @@ public class DashboardScreenController {
         regulatoryComplianceButton.setOnAction(event -> {
             // Logic for navigating to Regulatory Compliance screen
         });
+    }
+
+    private void setupBarChart() {
+        // Check if BarChart and axes are properly initialized
+        if (ideasBarChart == null || barChartXAxis == null || barChartYAxis == null) {
+            System.out.println("BarChart or Axes are not initialized properly");
+            return;
+        }
+
+        // Fetch data from the database for the bar chart
+        XYChart.Series<String, Number> dataSeries = new XYChart.Series<>();
+        dataSeries.setName("Ideas Per Month");
+
+        dataSeries.getData().addAll(DataOperations.getIdeasPerMonthData());
+
+        // Clear existing data and add the new series
+        ideasBarChart.getData().clear();
+        ideasBarChart.getData().add(dataSeries);
+
+        // Customize the axes if needed
+        barChartXAxis.setLabel("Month");
+        barChartYAxis.setLabel("Number of Ideas");
     }
 
     // Make sure the class is properly closed

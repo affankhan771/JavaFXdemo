@@ -1,11 +1,15 @@
 package com.example.javafxdemo;
 
+import javafx.scene.chart.XYChart;
+import java.time.LocalDate;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.*;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 public class DataOperations {
 
@@ -163,6 +167,7 @@ public class DataOperations {
 
             while (rs.next()) {
                 Idea idea = new Idea(
+
                         rs.getInt("ideaID"),
                         rs.getString("drugName"),
                         rs.getString("description"),
@@ -170,7 +175,7 @@ public class DataOperations {
                         rs.getString("chemicalFormula"),
                         rs.getString("price"),
                         rs.getString("submittedBy"),
-                        rs.getInt("status") // Retrieve status
+                        rs.getInt("status")// Retrieve status
                 );
                 ideas.add(idea);
 
@@ -226,6 +231,7 @@ public class DataOperations {
         return ideas;
     }
 
+
     public static Idea getIdeaById(int ideaID) {
         String sql = "SELECT * FROM ideas WHERE ideaID = ?";
         try (Connection conn = DatabaseConnection.connect();
@@ -252,6 +258,7 @@ public class DataOperations {
         }
         return null; // Idea not found
     }
+
     public static int getIdeaStatusById(int ideaID) {
         String sql = "SELECT status FROM ideas WHERE ideaID = ?";
         try (Connection conn = DatabaseConnection.connect();
@@ -272,6 +279,131 @@ public class DataOperations {
             return -1;
         }
     }
+
+    public static int getTotalIdeasCount() {
+        String sql = "SELECT COUNT(*) FROM ideas";
+        return getCount(sql);
+    }
+
+    public static int getApprovedIdeasCount() {
+        String sql = "SELECT COUNT(*) FROM ideas WHERE status >= 3"; // Assuming status 7 is 'Launched'
+        return getCount(sql);
+    }
+
+    public static int getRejectedIdeasCount() {
+        String sql = "SELECT COUNT(*) FROM ideas WHERE status = 0";
+        return getCount(sql);
+    }
+
+    public static int getPendingApprovalsCount() {
+        String sql = "SELECT COUNT(*) FROM ideas WHERE status < 3";
+        return getCount(sql);
+    }
+
+    private static int getCount(String sql) {
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to get count: " + e.getMessage());
+        }
+        return 0;
+    }
+    public static List<XYChart.Data<String, Number>> getIdeasPerMonthData() {
+        String sql = "SELECT STRFTIME('%Y-%m', submitDate) AS Month, COUNT(*) AS IdeaCount FROM ideas GROUP BY Month ORDER BY Month";
+        List<XYChart.Data<String, Number>> dataList = new ArrayList<>();
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                String month = rs.getString("Month");
+                int count = rs.getInt("IdeaCount");
+                dataList.add(new XYChart.Data<>(month, count));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to retrieve ideas per month data: " + e.getMessage());
+        }
+        return dataList;
+    }
+    public static List<Idea> getIdeasByFilter(String filter) {
+        List<Idea> ideas = new ArrayList<>();
+        String sql = "SELECT * FROM ideas";
+        List<String> validStatuses = Arrays.asList("Pending", "Approved", "Rejected");
+
+        if (filter != null && validStatuses.contains(filter)) {
+            switch (filter) {
+                case "Pending":
+                    sql += " WHERE status = 1"; // Assuming status 1 is 'Pending'
+                    break;
+                case "Approved":
+                    sql += " WHERE status BETWEEN 2 AND 7";
+                    break;
+                case "Rejected":
+                    sql += " WHERE status = 0";
+                    break;
+            }
+        } // Removed sorting by submission date
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql);
+             ResultSet rs = pstmt.executeQuery()) {
+
+            while (rs.next()) {
+                Idea idea = new Idea(
+                        rs.getInt("ideaID"),
+                        rs.getString("drugName"),
+                        rs.getString("description"),
+                        rs.getString("category"),
+                        rs.getString("chemicalFormula"),
+                        rs.getString("price"),
+                        rs.getString("submittedBy"),
+                        rs.getInt("status")
+                );
+                ideas.add(idea);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to retrieve ideas: " + e.getMessage());
+        }
+        return ideas;
+    }
+
+
+
+    public static boolean updateIdeaStatus(int ideaID, int newStatus) {
+        String sql = "UPDATE ideas SET status = ? WHERE ideaID = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, newStatus);
+            pstmt.setInt(2, ideaID);
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("Idea status updated for ideaID: " + ideaID);
+                return true;
+            } else {
+                System.err.println("No idea found with ideaID: " + ideaID);
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to update idea status: " + e.getMessage());
+            return false;
+        }
+    }
+
+
+
+
 
 
 
