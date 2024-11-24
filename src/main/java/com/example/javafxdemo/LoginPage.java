@@ -1,10 +1,17 @@
 package com.example.javafxdemo;
+import com.example.javafxdemo.db.*;
+import com.example.javafxdemo.ui.*;
+import com.example.javafxdemo.bl.*;
+
 import java.io.IOException;
 import java.sql.Connection;
 import java.util.List;
+
+import com.example.javafxdemo.bl.UserSession;
+import com.example.javafxdemo.ui.*;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
-import java.sql.Connection;
+
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -16,13 +23,6 @@ import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import javafx.application.Application;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.image.Image;
-import javafx.scene.layout.*;
-import javafx.stage.Stage;
 
 public class LoginPage extends Application {
 

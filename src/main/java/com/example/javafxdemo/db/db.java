@@ -1,5 +1,7 @@
-package com.example.javafxdemo;
-
+package com.example.javafxdemo.db;
+import com.example.javafxdemo.db.*;
+import com.example.javafxdemo.ui.*;
+import com.example.javafxdemo.bl.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;

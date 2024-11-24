@@ -1,7 +1,7 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.ui;
 
+import com.example.javafxdemo.db.DataOperations;
 import javafx.fxml.FXML;
-import javafx.scene.chart.PieChart;
 import javafx.scene.chart.BarChart;
 import javafx.scene.chart.XYChart;
 import javafx.scene.chart.CategoryAxis;

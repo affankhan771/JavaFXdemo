@@ -1,9 +1,8 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.bl;
 
-import java.time.LocalDate;
 
 // A simple class to hold Idea details
-class Idea {
+public class Idea {
     private int id;
     private String name;
     private String description;

@@ -1,5 +1,7 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.ui;
 
+import com.example.javafxdemo.bl.User;
+import com.example.javafxdemo.db.DataOperations;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -13,16 +15,7 @@ import java.util.List;
 
 //import com.example.javafxdemo.model.User;
 //import com.example.javafxdemo.util.DataOperations;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-
-import java.util.List;
 
 public class ManageUsersController {
 

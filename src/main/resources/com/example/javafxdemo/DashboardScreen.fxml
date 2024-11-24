@@ -5,7 +5,7 @@
 <?import javafx.scene.chart.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.example.javafxdemo.DashboardScreenController"
+            fx:controller="com.example.javafxdemo.ui.DashboardScreenController"
             style="-fx-padding: 20; -fx-background-color: #f4f4f4;">
 
     <!-- Header Section -->

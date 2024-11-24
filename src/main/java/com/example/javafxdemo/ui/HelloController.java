@@ -1,10 +1,11 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.ui;
 
+import com.example.javafxdemo.db.DatabaseConnection;
+import com.example.javafxdemo.db.DatabaseSetup;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
-import javafx.scene.control.ProgressBar;
+
 import java.sql.Connection;
-import java.sql.SQLException;
 
 public class HelloController {
     @FXML

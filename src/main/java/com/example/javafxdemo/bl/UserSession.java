@@ -1,4 +1,4 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.bl;
 
 public class UserSession {
     private static UserSession instance;

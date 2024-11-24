@@ -1,14 +1,14 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.ui;
 
+import com.example.javafxdemo.bl.UserSession;
+import com.example.javafxdemo.db.DataOperations;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
-import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.ComboBox;
 
 import java.net.URL;
 import java.util.ResourceBundle;

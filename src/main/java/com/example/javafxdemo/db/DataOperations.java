@@ -1,13 +1,18 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.db;
+import com.example.javafxdemo.db.*;
+import com.example.javafxdemo.ui.*;
+import com.example.javafxdemo.bl.*;
 
+import com.example.javafxdemo.bl.SalesPlan;
+import com.example.javafxdemo.bl.TestingData;
+import com.example.javafxdemo.bl.User;
 import javafx.scene.chart.XYChart;
-import java.time.LocalDate;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.*;
-import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;

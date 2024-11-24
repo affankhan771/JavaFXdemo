@@ -1,5 +1,7 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.ui;
 
+import com.example.javafxdemo.bl.Idea;
+import com.example.javafxdemo.db.DataOperations;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;

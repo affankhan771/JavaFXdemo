@@ -1,18 +1,14 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.ui;
+import com.example.javafxdemo.bl.Idea;
+import com.example.javafxdemo.bl.UserSession;
+import com.example.javafxdemo.db.DataOperations;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.scene.layout.HBox;
-import javafx.scene.input.MouseEvent;
-import javafx.application.Platform;
 import javafx.scene.control.Alert.AlertType;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 
 public class ApprovalsScreenController {

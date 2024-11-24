@@ -1,4 +1,7 @@
-package com.example.javafxdemo;
+package com.example.javafxdemo.ui;
+import com.example.javafxdemo.bl.Idea;
+import com.example.javafxdemo.bl.SalesPlan;
+import com.example.javafxdemo.db.DataOperations;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;

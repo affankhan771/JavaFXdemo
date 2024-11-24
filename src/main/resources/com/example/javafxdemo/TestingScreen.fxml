@@ -4,7 +4,7 @@
 <?import javafx.geometry.Insets?>
 
 <StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
-           fx:controller="com.example.javafxdemo.TestingScreenController" style="-fx-background-color: #f0f8ff; -fx-padding: 20;">
+           fx:controller="com.example.javafxdemo.ui.TestingScreenController" style="-fx-background-color: #f0f8ff; -fx-padding: 20;">
     <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30; -fx-background-color: white; -fx-border-color: lightgray; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
         <!-- Title -->
         <Label text="Testing Information" style="-fx-font-size: 24; -fx-font-weight: bold;" />

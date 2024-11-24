@@ -112,7 +112,7 @@ public class IdeaSubmissionView {
         alert.showAndWait();
     }
 }*/
-package com.example.javafxdemo;
+package com.example.javafxdemo.ui;
 
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.VBox;
