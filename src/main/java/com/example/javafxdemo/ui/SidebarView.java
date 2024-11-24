@@ -28,8 +28,7 @@ public class SidebarView {
                 "Sales Forecast",
                 "Manage Users",
                 "Regulatory Approvals",
-                "Launch",
-                "new button"
+                "Launch"
         };
 
         // Dynamically create the button array based on the sidebarOptions length

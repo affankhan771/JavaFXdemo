@@ -124,7 +124,7 @@ public class IdeaSubmissionView {
 
     public VBox createIdeaSubmissionForm(Stage primaryStage) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("IdeaSubmissionView.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/IdeaSubmissionView.fxml"));
             return loader.load();
         } catch (IOException e) {
             e.printStackTrace();
