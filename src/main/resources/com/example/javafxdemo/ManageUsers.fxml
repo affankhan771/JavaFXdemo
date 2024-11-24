@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javafxdemo.ManageUsersController"
+      spacing="20" alignment="TOP_CENTER" style="-fx-background-color: black; -fx-padding: 20px;">
+    <!-- Title -->
+    <Label text="Manage Users" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: white;" />
+
+    <!-- User Table -->
+    <TableView fx:id="userTable" prefHeight="300" prefWidth="600">
+        <columns>
+            <TableColumn text="ID" fx:id="colId" prefWidth="100" />
+            <TableColumn text="Name" fx:id="colName" prefWidth="150" />
+            <TableColumn text="Email" fx:id="colEmail" prefWidth="200" />
+            <TableColumn text="Grade" fx:id="colGrade" prefWidth="100" />
+            <TableColumn text="Actions" fx:id="colAction" prefWidth="150" />
+        </columns>
+    </TableView>
+
+
+    <!-- Add User Form -->
+    <VBox spacing="10" alignment="CENTER">
+        <Label text="Add New User" style="-fx-font-size: 20px; -fx-text-fill: white;" />
+        <HBox spacing="10">
+            <TextField fx:id="idField" promptText="User ID" />
+            <TextField fx:id="nameField" promptText="Name" />
+            <TextField fx:id="emailField" promptText="Email" />
+            <TextField fx:id="gradeField" promptText="Grade" />
+            <PasswordField fx:id="passwordField" promptText="Password" />
+        </HBox>
+        <Button text="Add User" fx:id="addUserButton" style="-fx-background-color: green; -fx-text-fill: white;" />
+    </VBox>
+</VBox>

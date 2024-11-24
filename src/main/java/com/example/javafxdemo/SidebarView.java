@@ -21,12 +21,15 @@ public class SidebarView {
                 "Dashboard",
                 "Idea Submission",
                 "Idea Tracking",
-                "My Approvals",
+                "Review Testing",
                 "Regulatory Compliance",
                 "Approvals new",
                 "Testing",
                 "Sales Forecast",
-                "New Feature 4"
+                "Manage Users",
+                "Regulatory Approvals",
+                "Launch",
+                "new button"
         };
 
         // Dynamically create the button array based on the sidebarOptions length

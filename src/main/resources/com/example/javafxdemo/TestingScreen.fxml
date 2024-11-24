@@ -1,42 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
-<?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<?import javafx.geometry.Pos?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.javafxdemo.TestingScreenController">
-    <!-- Header Section -->
-    <VBox alignment="CENTER" spacing="20" style="-fx-padding: 20px;">
-        <Label text="Testing Screen" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
-        <Hyperlink text="Test History" onAction="#handleTestHistory"/>
+<StackPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+           fx:controller="com.example.javafxdemo.TestingScreenController" style="-fx-background-color: #f0f8ff; -fx-padding: 20;">
+    <VBox spacing="20" alignment="CENTER" style="-fx-padding: 30; -fx-background-color: white; -fx-border-color: lightgray; -fx-border-width: 2; -fx-border-radius: 10; -fx-background-radius: 10;">
+        <!-- Title -->
+        <Label text="Testing Information" style="-fx-font-size: 24; -fx-font-weight: bold;" />
+
+        <!-- Idea Selection Dropdown -->
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="Select Idea:" />
+            <ComboBox fx:id="ideaSelectionComboBox" promptText="Select an Idea" />
+        </HBox>
+
+        <!-- Input Fields -->
+        <GridPane hgap="10" vgap="10" style="-fx-padding: 10;">
+            <Label text="Test Name:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="testNameField" promptText="Enter test name" GridPane.columnIndex="1" GridPane.rowIndex="0"
+                       style="-fx-background-color: #ffffff; -fx-border-color: lightgray; -fx-border-radius: 5;" />
+
+            <Label text="Test Details:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextArea fx:id="testDetailsField" promptText="Enter detailed description of the test"
+                      GridPane.columnIndex="1" GridPane.rowIndex="1" prefRowCount="3"
+                      style="-fx-background-color: #ffffff; -fx-border-color: lightgray; -fx-border-radius: 5;" />
+
+            <Label text="Estimated Budget (USD):" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="estimatedBudgetField" promptText="Enter estimated budget" GridPane.columnIndex="1" GridPane.rowIndex="2"
+                       style="-fx-background-color: #ffffff; -fx-border-color: lightgray; -fx-border-radius: 5;" />
+
+            <Label text="Number of Tests Performed:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="numberOfTestsField" promptText="Enter number of tests" GridPane.columnIndex="1" GridPane.rowIndex="3"
+                       style="-fx-background-color: #ffffff; -fx-border-color: lightgray; -fx-border-radius: 5;" />
+
+            <Label text="Estimated Time Taken (days):" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextField fx:id="estimatedTimeField" promptText="Enter estimated time taken" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                       style="-fx-background-color: #ffffff; -fx-border-color: lightgray; -fx-border-radius: 5;" />
+        </GridPane>
+
+        <!-- Status -->
+        <HBox spacing="10" alignment="CENTER">
+            <Label text="Status:" />
+            <Label fx:id="statusLabel" text="Pending" style="-fx-text-fill: red;" />
+        </HBox>
+
+        <!-- Submit Button -->
+        <Button fx:id="submitButton" text="Submit" disable="true" style="-fx-background-color: green; -fx-text-fill: white;" />
     </VBox>
-
-    <!-- Main Content Area -->
-    <HBox spacing="30" alignment="CENTER" layoutX="50" layoutY="100">
-        <!-- Left Panel: Test Input -->
-        <VBox spacing="20" prefWidth="400">
-            <TextField fx:id="testNameField" promptText="Test Name/Title" />
-            <TextArea fx:id="testDescriptionArea" promptText="Test Description" prefHeight="150" />
-            <TextField fx:id="testParamsField" promptText="Test Parameters (e.g., Dosage, Duration)" />
-            <Button text="Submit Test" onAction="#handleSubmitTest" style="-fx-background-color: green; -fx-text-fill: white;" />
-        </VBox>
-
-        <!-- Right Panel: Test Status -->
-        <VBox spacing="20" prefWidth="300">
-            <Label fx:id="testStatusLabel" text="Status: Test Not Started" style="-fx-font-weight: bold;"/>
-            <ProgressBar fx:id="progressBar" progress="0" />
-            <Label fx:id="testOutcomeLabel" text="Outcome: N/A" style="-fx-font-weight: bold;"/>
-        </VBox>
-    </HBox>
-
-    <!-- Test History Section (Expandable) -->
-    <VBox fx:id="historySection" spacing="10" visible="false" layoutX="50" layoutY="400">
-        <Label text="Test History" style="-fx-font-size: 20px;"/>
-        <ListView fx:id="testHistoryList" prefHeight="200"/>
-    </VBox>
-
-    <!-- Footer Section -->
-    <HBox alignment="CENTER" spacing="10" layoutX="50" layoutY="620">
-        <Label text="Ensure you provide accurate parameters for the test" style="-fx-font-size: 12px;"/>
-    </HBox>
-</AnchorPane>
+</StackPane>

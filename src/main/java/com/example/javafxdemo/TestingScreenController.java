@@ -2,86 +2,164 @@ package com.example.javafxdemo;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.VBox;
-import javafx.scene.control.ProgressBar;
+import java.util.List;
 
+/**
+ * Controller class for the Testing Screen.
+ */
 public class TestingScreenController {
 
     @FXML
-    private TextField testNameField;
-    @FXML
-    private TextArea testDescriptionArea;
-    @FXML
-    private TextField testParamsField;
-    @FXML
-    private Button submitTestButton;
-    @FXML
-    private Label testStatusLabel;
-    @FXML
-    private ProgressBar progressBar;
-    @FXML
-    private Label testOutcomeLabel;
-    @FXML
-    private ListView<String> testHistoryList;
-    @FXML
-    private VBox historySection;
+    private ComboBox<String> ideaSelectionComboBox;
 
-    // Handle the submit button click event
     @FXML
-    private void handleSubmitTest() {
-        String testName = testNameField.getText();
-        String testDescription = testDescriptionArea.getText();
-        String testParams = testParamsField.getText();
+    private TextField testNameField, estimatedBudgetField, numberOfTestsField, estimatedTimeField;
 
-        // Validate the fields before submission
-        if (testName.isEmpty() || testDescription.isEmpty() || testParams.isEmpty()) {
-            showError("Please fill all the fields.");
+    @FXML
+    private TextArea testDetailsField;
+
+    @FXML
+    private Label statusLabel;
+
+    @FXML
+    private Button submitButton;
+
+    /**
+     * Initializes the Testing Screen Controller.
+     */
+    @FXML
+    public void initialize() {
+        // Populate the Idea Selection ComboBox with ideas having status = 5
+        populateIdeaComboBox();
+
+        // Add listeners to validate the form dynamically
+        ideaSelectionComboBox.valueProperty().addListener((observable, oldValue, newValue) -> validateForm());
+        testNameField.textProperty().addListener((observable, oldValue, newValue) -> validateForm());
+        testDetailsField.textProperty().addListener((observable, oldValue, newValue) -> validateForm());
+        estimatedBudgetField.textProperty().addListener((observable, oldValue, newValue) -> validateForm());
+        numberOfTestsField.textProperty().addListener((observable, oldValue, newValue) -> validateForm());
+        estimatedTimeField.textProperty().addListener((observable, oldValue, newValue) -> validateForm());
+
+        // Set up Submit Button action
+        submitButton.setOnAction(e -> handleSubmit());
+    }
+
+    /**
+     * Populates the Idea Selection ComboBox with ideas having status = 5.
+     */
+    private void populateIdeaComboBox() {
+        List<Idea> ideas = DataOperations.getIdeasByStatus(5); // Fetch ideas from the database
+        if (ideas != null) {
+            for (Idea idea : ideas) {
+                ideaSelectionComboBox.getItems().add("ID: " + idea.getIdeaId() + " - " + idea.getName());
+            }
+        } else {
+            System.err.println("Failed to fetch ideas from the database.");
+        }
+
+        ideaSelectionComboBox.setPromptText("Select an Idea");
+    }
+
+    /**
+     * Validates the form and updates the status label and submit button accordingly.
+     */
+    private void validateForm() {
+        boolean isFormComplete = ideaSelectionComboBox.getValue() != null
+                && !testNameField.getText().trim().isEmpty()
+                && !testDetailsField.getText().trim().isEmpty()
+                && !estimatedBudgetField.getText().trim().isEmpty()
+                && !numberOfTestsField.getText().trim().isEmpty()
+                && !estimatedTimeField.getText().trim().isEmpty();
+
+        if (isFormComplete) {
+            statusLabel.setText("Completed");
+            statusLabel.setStyle("-fx-text-fill: green;");
+            submitButton.setDisable(false);
+        } else {
+            statusLabel.setText("Pending");
+            statusLabel.setStyle("-fx-text-fill: red;");
+            submitButton.setDisable(true);
+        }
+    }
+
+    /**
+     * Handles the Submit Button action.
+     */
+    private void handleSubmit() {
+        // Collect data from the input fields
+        String selectedIdea = ideaSelectionComboBox.getValue();
+        String testName = testNameField.getText().trim();
+        String testDetails = testDetailsField.getText().trim();
+        double estimatedBudget;
+        int numberOfTests, estimatedTime;
+
+        try {
+            estimatedBudget = Double.parseDouble(estimatedBudgetField.getText().trim());
+            numberOfTests = Integer.parseInt(numberOfTestsField.getText().trim());
+            estimatedTime = Integer.parseInt(estimatedTimeField.getText().trim());
+        } catch (NumberFormatException e) {
+            showAlert("Invalid Input", "Please ensure numeric fields contain valid numbers.", Alert.AlertType.ERROR);
             return;
         }
 
-        // Update test status to "In Progress"
-        testStatusLabel.setText("Status: Test in Progress");
-        testOutcomeLabel.setText("Outcome: N/A");
-        progressBar.setProgress(0.0);
+        // Extract Idea ID from the selected string
+        int ideaID = extractIdeaID(selectedIdea);
 
-        // Simulate test progress and completion
-        simulateTestProgress();
+        // Insert data into the database
+        boolean success = DataOperations.insertTestingData(ideaID, testName, testDetails, estimatedBudget, numberOfTests, estimatedTime);
+
+        if (success) {
+            // Show success alert
+            showAlert("Submission Successful", "Testing details have been successfully submitted.", Alert.AlertType.INFORMATION);
+            resetForm();
+        } else {
+            showAlert("Submission Failed", "An error occurred while saving testing details. Please try again.", Alert.AlertType.ERROR);
+        }
     }
 
-    // Simulate the test progress
-    private void simulateTestProgress() {
-        new Thread(() -> {
-            for (int i = 0; i <= 100; i++) {
-                final int progress = i;
-                try {
-                    Thread.sleep(100);  // Simulate the test running
-                    progressBar.setProgress(progress / 100.0);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                }
-            }
-            updateTestResult("Test Complete", "Passed");
-        }).start();
+    /**
+     * Extracts the Idea ID from the ComboBox selection string.
+     *
+     * @param selectedIdea The selected Idea string in the format "ID: <IdeaID> - <Idea Name>"
+     * @return The extracted Idea ID, or -1 if extraction fails.
+     */
+    private int extractIdeaID(String selectedIdea) {
+        try {
+            String[] parts = selectedIdea.split(" - ")[0].split(": ");
+            return Integer.parseInt(parts[1].trim());
+        } catch (Exception e) {
+            System.err.println("Error extracting Idea ID: " + e.getMessage());
+            return -1;
+        }
     }
 
-    // Update the test outcome
-    private void updateTestResult(String status, String outcome) {
-        // Update the status and outcome labels
-        testStatusLabel.setText("Status: " + status);
-        testOutcomeLabel.setText("Outcome: " + outcome);
+    /**
+     * Resets the form fields and status label.
+     */
+    private void resetForm() {
+        ideaSelectionComboBox.getSelectionModel().clearSelection();
+        testNameField.clear();
+        testDetailsField.clear();
+        estimatedBudgetField.clear();
+        numberOfTestsField.clear();
+        estimatedTimeField.clear();
+        statusLabel.setText("Pending");
+        statusLabel.setStyle("-fx-text-fill: red;");
+        submitButton.setDisable(true);
     }
 
-    // Handle the Test History hyperlink click event
-    @FXML
-    private void handleTestHistory() {
-        // Toggle the visibility of the Test History section
-        historySection.setVisible(!historySection.isVisible());
-    }
-
-    // Show error message
-    private void showError(String message) {
-        // You can show an error message using an alert
-        Alert alert = new Alert(Alert.AlertType.ERROR, message, ButtonType.OK);
+    /**
+     * Helper method to display an alert.
+     *
+     * @param title   The title of the alert.
+     * @param message The message content of the alert.
+     * @param type    The type of the alert.
+     */
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 }

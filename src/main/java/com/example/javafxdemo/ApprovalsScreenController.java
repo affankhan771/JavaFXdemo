@@ -49,15 +49,35 @@ public class ApprovalsScreenController {
 
     public void initialize() {
         // Initialize filter/sort options
-        filterSortDropdown.getItems().addAll("All", "Pending", "Approved", "Rejected", "Sort by Submission Date");
+        filterSortDropdown.getItems().clear();
 
-        // Fetch and display ideas
-        loadIdeas("All");
+        // Get user rank from UserSession
+        int userRank = UserSession.getInstance().getGrade();
 
-        // Add listener for dropdown selection
+        // Adjust filter options and idea loading based on rank
+        if (userRank == 1) {
+            // C-level user
+            filterSortDropdown.getItems().addAll("Pending Approval");
+            loadIdeasForCLevel();
+        } else if (userRank == 2) {
+            // M-level user
+            filterSortDropdown.getItems().addAll("Pending Approval");
+            loadIdeasForMLevel();
+        } else {
+            // G-level user or others
+            filterSortDropdown.getItems().addAll("No Approval Access");
+            ideaCardsContainer.getChildren().clear();
+            showAlert("Access Denied", "You do not have permission to approve ideas.", AlertType.WARNING);
+        }
+
+        // Add listener for filter/sort dropdown selection if needed
         filterSortDropdown.setOnAction(e -> {
             String selectedOption = filterSortDropdown.getValue();
-            loadIdeas(selectedOption);
+            if (userRank == 1) {
+                loadIdeasForCLevel();
+            } else if (userRank == 2) {
+                loadIdeasForMLevel();
+            }
         });
 
         // Add listener for search bar
@@ -71,7 +91,11 @@ public class ApprovalsScreenController {
                     showAlert("Invalid Input", "Please enter a valid idea ID.", AlertType.WARNING);
                 }
             } else {
-                loadIdeas("All");
+                if (userRank == 1) {
+                    loadIdeasForCLevel();
+                } else if (userRank == 2) {
+                    loadIdeasForMLevel();
+                }
             }
         });
 
@@ -79,6 +103,25 @@ public class ApprovalsScreenController {
         approveButton.setDisable(true);
         disapproveButton.setDisable(true);
     }
+    private void loadIdeasForMLevel() {
+        ideaCardsContainer.getChildren().clear();
+        List<Idea> ideas = DataOperations.getIdeasByStatus(1); // Status = 1 for M-level approval
+        for (Idea idea : ideas) {
+            VBox card = createIdeaCard(idea);
+            ideaCardsContainer.getChildren().add(card);
+        }
+    }
+
+    private void loadIdeasForCLevel() {
+        ideaCardsContainer.getChildren().clear();
+        List<Idea> ideas = DataOperations.getIdeasByStatus(2); // Status = 2 for C-level approval
+        for (Idea idea : ideas) {
+            VBox card = createIdeaCard(idea);
+            ideaCardsContainer.getChildren().add(card);
+        }
+    }
+
+
     private void loadIdeas(String filter) {
         ideaCardsContainer.getChildren().clear();
 
@@ -90,16 +133,24 @@ public class ApprovalsScreenController {
         }
     }
     private void loadIdeaById(int ideaID) {
-        ideaCardsContainer.getChildren().clear();
-
         Idea idea = DataOperations.getIdeaById(ideaID);
         if (idea != null) {
-            VBox card = createIdeaCard(idea);
-            ideaCardsContainer.getChildren().add(card);
+            int userRank = UserSession.getInstance().getGrade();
+            int ideaStatus = idea.getStatus();
+
+            // Check if the user is allowed to view this idea
+            if ((userRank == 2 && ideaStatus == 1) || (userRank == 1 && ideaStatus == 2)) {
+                ideaCardsContainer.getChildren().clear();
+                VBox card = createIdeaCard(idea);
+                ideaCardsContainer.getChildren().add(card);
+            } else {
+                showAlert("Access Denied", "You do not have permission to view this idea.", AlertType.WARNING);
+            }
         } else {
             showAlert("Idea Not Found", "No idea found with ID: " + ideaID, AlertType.INFORMATION);
         }
     }
+
     private VBox createIdeaCard(Idea idea) {
         VBox card = new VBox(10);
         card.setStyle("-fx-padding: 10; -fx-background-color: #555555; -fx-border-radius: 5; -fx-background-radius: 5;");
@@ -132,52 +183,78 @@ public class ApprovalsScreenController {
 
     public void onApproveButtonClicked() {
         if (selectedIdea != null) {
-            Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
-            confirmAlert.setTitle("Confirm Approval");
-            confirmAlert.setHeaderText(null);
-            confirmAlert.setContentText("Are you sure you want to approve this idea?");
+            int userRank = UserSession.getInstance().getGrade();
+            int currentStatus = selectedIdea.getStatus();
 
-            confirmAlert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    // Increment the status by 1
-                    int newStatus = selectedIdea.getStatus() + 1;
-                    boolean success = DataOperations.updateIdeaStatus(selectedIdea.getIdeaId(), newStatus);
-                    if (success) {
-                        showAlert("Success", "Idea approved successfully.", AlertType.INFORMATION);
-                        loadIdeas(filterSortDropdown.getValue());
-                        approveButton.setDisable(true);
-                        disapproveButton.setDisable(true);
-                    } else {
-                        showAlert("Error", "Failed to approve the idea.", AlertType.ERROR);
+            // Determine if the user has permission to approve this idea
+            if ((userRank == 2 && currentStatus == 1) || (userRank == 1 && currentStatus == 2)) {
+                Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
+                confirmAlert.setTitle("Confirm Approval");
+                confirmAlert.setHeaderText(null);
+                confirmAlert.setContentText("Are you sure you want to approve this idea?");
+
+                confirmAlert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        // Increment the status by 1
+                        int newStatus = selectedIdea.getStatus() + 1;
+                        boolean success = DataOperations.updateIdeaStatus(selectedIdea.getIdeaId(), newStatus);
+                        if (success) {
+                            showAlert("Success", "Idea approved successfully.", AlertType.INFORMATION);
+                            if (userRank == 1) {
+                                loadIdeasForCLevel();
+                            } else if (userRank == 2) {
+                                loadIdeasForMLevel();
+                            }
+                            approveButton.setDisable(true);
+                            disapproveButton.setDisable(true);
+                        } else {
+                            showAlert("Error", "Failed to approve the idea.", AlertType.ERROR);
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                showAlert("Access Denied", "You do not have permission to approve this idea.", AlertType.WARNING);
+            }
         }
     }
+
 
     public void onDisapproveButtonClicked() {
         if (selectedIdea != null) {
-            Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
-            confirmAlert.setTitle("Confirm Rejection");
-            confirmAlert.setHeaderText(null);
-            confirmAlert.setContentText("Are you sure you want to reject this idea?");
+            int userRank = UserSession.getInstance().getGrade();
+            int currentStatus = selectedIdea.getStatus();
 
-            confirmAlert.showAndWait().ifPresent(response -> {
-                if (response == ButtonType.OK) {
-                    // Set status to 0
-                    boolean success = DataOperations.updateIdeaStatus(selectedIdea.getIdeaId(), 0);
-                    if (success) {
-                        showAlert("Success", "Idea rejected successfully.", AlertType.INFORMATION);
-                        loadIdeas(filterSortDropdown.getValue());
-                        approveButton.setDisable(true);
-                        disapproveButton.setDisable(true);
-                    } else {
-                        showAlert("Error", "Failed to reject the idea.", AlertType.ERROR);
+            // Determine if the user has permission to disapprove this idea
+            if ((userRank == 2 && currentStatus == 1) || (userRank == 1 && currentStatus == 2)) {
+                Alert confirmAlert = new Alert(AlertType.CONFIRMATION);
+                confirmAlert.setTitle("Confirm Rejection");
+                confirmAlert.setHeaderText(null);
+                confirmAlert.setContentText("Are you sure you want to reject this idea?");
+
+                confirmAlert.showAndWait().ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        // Set status to 0
+                        boolean success = DataOperations.updateIdeaStatus(selectedIdea.getIdeaId(), 0);
+                        if (success) {
+                            showAlert("Success", "Idea rejected successfully.", AlertType.INFORMATION);
+                            if (userRank == 1) {
+                                loadIdeasForCLevel();
+                            } else if (userRank == 2) {
+                                loadIdeasForMLevel();
+                            }
+                            approveButton.setDisable(true);
+                            disapproveButton.setDisable(true);
+                        } else {
+                            showAlert("Error", "Failed to reject the idea.", AlertType.ERROR);
+                        }
                     }
-                }
-            });
+                });
+            } else {
+                showAlert("Access Denied", "You do not have permission to reject this idea.", AlertType.WARNING);
+            }
         }
     }
+
     private void showAlert(String title, String content, AlertType type) {
         Alert alert = new Alert(type);
         alert.setTitle(title);

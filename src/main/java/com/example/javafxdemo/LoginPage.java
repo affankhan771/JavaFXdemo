@@ -134,14 +134,15 @@ public class LoginPage extends Application {
             contentArea.getChildren().add(ideaTrackingView.createIdeaTrackingScreen(primaryStage));
 
         } else if (optionIndex == 3) {
-            // Use ScrollPane to make ideas scrollable
-            ScrollPane scrollPane = new ScrollPane();
-            scrollPane.setContent(createApprovalBox(primaryStage));
-            scrollPane.setFitToWidth(true); // Ensure content fits horizontally
-            scrollPane.setStyle("-fx-background-color: black;");
-
-            contentArea.getChildren().add(scrollPane);
-           // approvalView.showApprovalScreen(primaryStage, getNavBar(primaryStage), getSidebar(primaryStage));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/TestingReviewScreen.fxml"));
+            StackPane testingReviewScreen;
+            try {
+                testingReviewScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException("Error loading Testing Review Screen: " + e.getMessage(), e);
+            }
+            contentArea.getChildren().clear(); // Clear existing content
+            contentArea.getChildren().add(testingReviewScreen);
         } else if (optionIndex == 4) { // Regulatory Compliance
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/RegulatoryCompliance.fxml"));
             VBox regulatoryComplianceScreen;
@@ -183,19 +184,14 @@ public class LoginPage extends Application {
             contentArea.getChildren().add(dashboardScreen);
         } else if (optionIndex == 6) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/TestingScreen.fxml"));
-            AnchorPane testingScreen = null;
+            StackPane testingScreen;
             try {
                 testingScreen = loader.load();
             } catch (IOException e) {
-                e.printStackTrace();
                 throw new RuntimeException("Error loading Testing Screen: " + e.getMessage(), e);
             }
-
-            ScrollPane scrollPane = new ScrollPane();
-            scrollPane.setContent(testingScreen);
-            scrollPane.setFitToWidth(true);
-            scrollPane.setStyle("-fx-background-color: black;");
-            contentArea.getChildren().add(scrollPane);
+            contentArea.getChildren().clear(); // Clear existing content
+            contentArea.getChildren().add(testingScreen);
 
         } else if (optionIndex == 7) { // Sales Forecast Screen
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/SalesForecastScreen.fxml"));
@@ -208,7 +204,42 @@ public class LoginPage extends Application {
             }
 
             contentArea.getChildren().add(salesForecastScreen);
-        } else {
+        }
+        else if (optionIndex == 8) { // Manage Users Screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/ManageUsers.fxml"));
+            VBox manageUsersScreen;
+            try {
+                manageUsersScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException("Error loading Manage Users screen: " + e.getMessage(), e);
+            }
+
+            contentArea.getChildren().add(manageUsersScreen);
+        }
+        else if (optionIndex == 9) { // Regulatory Approval Screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/RegulatoryApproval.fxml"));
+            VBox regulatoryApprovalScreen;
+            try {
+                regulatoryApprovalScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException("Error loading Regulatory Approval screen: " + e.getMessage(), e);
+            }
+
+            contentArea.getChildren().clear(); // Clear existing content
+            contentArea.getChildren().add(regulatoryApprovalScreen);
+        }
+        else if (optionIndex == 10) { // Launch Screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/LaunchScreen.fxml"));
+            VBox launchScreen;
+            try {
+                launchScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException("Error loading Launch Screen: " + e.getMessage(), e);
+            }
+            contentArea.getChildren().clear(); // Clear existing content
+            contentArea.getChildren().add(launchScreen);
+        }
+        else {
             // Default content for other options
             Label screenLabel = new Label("Content for option " + (optionIndex + 1));
             screenLabel.setStyle("-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: white;");

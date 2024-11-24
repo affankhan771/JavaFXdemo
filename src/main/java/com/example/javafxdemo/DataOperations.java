@@ -333,6 +333,85 @@ public class DataOperations {
         }
         return dataList;
     }
+
+    public static List<Idea> getIdeasByStatus(int status) {
+        List<Idea> ideas = new ArrayList<>();
+        String sql = "SELECT * FROM ideas WHERE status = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, status);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                Idea idea = new Idea(
+                        rs.getInt("ideaID"),
+                        rs.getString("drugName"),
+                        rs.getString("description"),
+                        rs.getString("category"),
+                        rs.getString("chemicalFormula"),
+                        rs.getString("price"),
+                        rs.getString("submittedBy"),
+                        rs.getInt("status")
+                );
+                ideas.add(idea);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to retrieve ideas by status: " + e.getMessage());
+        }
+        return ideas;
+    }
+
+    public static boolean insertTestingData(int ideaID, String testName, String details, double budget, int numOfTests, int timeTaken) {
+        String sql = "INSERT INTO Testing (IdeaID, TestName, Details, TestingBudget, NumberOfTests, TimeTaken) VALUES (?, ?, ?, ?, ?, ?)";
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, ideaID);
+            pstmt.setString(2, testName);
+            pstmt.setString(3, details);
+            pstmt.setDouble(4, budget);
+            pstmt.setInt(5, numOfTests);
+            pstmt.setInt(6, timeTaken);
+
+            pstmt.executeUpdate();
+            System.out.println("Testing data inserted successfully.");
+            return true;
+        } catch (SQLException e) {
+            System.err.println("Failed to insert testing data: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static TestingData getTestingDataByIdeaID(int ideaID) {
+        String sql = "SELECT * FROM Testing WHERE IdeaID = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, ideaID);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                return new TestingData(
+                        rs.getInt("TestID"),
+                        rs.getInt("IdeaID"),
+                        rs.getString("TestName"),
+                        rs.getString("Details"),
+                        rs.getDouble("TestingBudget"),
+                        rs.getInt("NumberOfTests"),
+                        rs.getInt("TimeTaken")
+                );
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to fetch testing data for Idea ID " + ideaID + ": " + e.getMessage());
+        }
+        return null;
+    }
+
+
+
     public static List<Idea> getIdeasByFilter(String filter) {
         List<Idea> ideas = new ArrayList<>();
         String sql = "SELECT * FROM ideas";
@@ -400,8 +479,226 @@ public class DataOperations {
             return false;
         }
     }
+    public static boolean insertSalesPlan(SalesPlan salesPlan) {
+        String sql = "INSERT INTO SalesPlan(ideaID, marketSize, growthRate, pricePerUnit, salesPeriod, seasonality, marketingBudget) "
+                + "VALUES(?, ?, ?, ?, ?, ?, ?)";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, salesPlan.getIdeaID());
+            pstmt.setInt(2, salesPlan.getMarketSize());
+            pstmt.setFloat(3, salesPlan.getGrowthRate());
+            pstmt.setInt(4, salesPlan.getPricePerUnit());
+            pstmt.setInt(5, salesPlan.getSalesPeriod());
+            pstmt.setString(6, salesPlan.getSeasonality());
+            pstmt.setInt(7, salesPlan.getMarketingBudget());
+
+            pstmt.executeUpdate();
+            System.out.println("SalesPlan inserted successfully.");
+            return true;
+
+        } catch (SQLException e) {
+            System.err.println("Failed to insert SalesPlan: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Read SalesPlans by IdeaID
+    public static List<SalesPlan> getSalesPlansByIdeaID(int ideaID) {
+        List<SalesPlan> salesPlans = new ArrayList<>();
+        String sql = "SELECT * FROM SalesPlan WHERE ideaID = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, ideaID);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                SalesPlan sp = new SalesPlan(
+                        rs.getInt("planID"),
+                        rs.getInt("ideaID"),
+                        rs.getInt("marketSize"),
+                        rs.getFloat("growthRate"),
+                        rs.getInt("pricePerUnit"),
+                        rs.getInt("salesPeriod"),
+                        rs.getString("seasonality"),
+                        rs.getInt("marketingBudget")
+                );
+                salesPlans.add(sp);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to retrieve SalesPlans: " + e.getMessage());
+        }
+        return salesPlans;
+    }
+
+    // Update SalesPlan
+    public static boolean updateSalesPlan(SalesPlan salesPlan) {
+        String sql = "UPDATE SalesPlan SET marketSize = ?, growthRate = ?, pricePerUnit = ?, "
+                + "salesPeriod = ?, seasonality = ?, marketingBudget = ? WHERE planID = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, salesPlan.getMarketSize());
+            pstmt.setFloat(2, salesPlan.getGrowthRate());
+            pstmt.setInt(3, salesPlan.getPricePerUnit());
+            pstmt.setInt(4, salesPlan.getSalesPeriod());
+            pstmt.setString(5, salesPlan.getSeasonality());
+            pstmt.setInt(6, salesPlan.getMarketingBudget());
+            pstmt.setInt(7, salesPlan.getPlanID());
+
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("SalesPlan updated successfully.");
+                return true;
+            } else {
+                System.err.println("No SalesPlan found with planID: " + salesPlan.getPlanID());
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to update SalesPlan: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Delete SalesPlan
+    public static boolean deleteSalesPlan(int planID) {
+        String sql = "DELETE FROM SalesPlan WHERE planID = ?";
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setInt(1, planID);
+            int affectedRows = pstmt.executeUpdate();
+            if (affectedRows > 0) {
+                System.out.println("SalesPlan deleted successfully.");
+                return true;
+            } else {
+                System.err.println("No SalesPlan found with planID: " + planID);
+                return false;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to delete SalesPlan: " + e.getMessage());
+            return false;
+        }
+    }
+
+    // Optional: Retrieve all SalesPlans
+    public static List<SalesPlan> getAllSalesPlans() {
+        List<SalesPlan> salesPlans = new ArrayList<>();
+        String sql = "SELECT * FROM SalesPlan";
+        try (Connection conn = DatabaseConnection.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                SalesPlan sp = new SalesPlan(
+                        rs.getInt("planID"),
+                        rs.getInt("ideaID"),
+                        rs.getInt("marketSize"),
+                        rs.getFloat("growthRate"),
+                        rs.getInt("pricePerUnit"),
+                        rs.getInt("salesPeriod"),
+                        rs.getString("seasonality"),
+                        rs.getInt("marketingBudget")
+                );
+                salesPlans.add(sp);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to retrieve all SalesPlans: " + e.getMessage());
+        }
+        return salesPlans;
+    }
 
 
+    public static List<User> getAllUsers() {
+        List<User> users = new ArrayList<>();
+        String sql = "SELECT userid, name, email, grade FROM users";
+
+        try (Connection conn = DatabaseConnection.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                users.add(new User(
+                        rs.getString("userid"),
+                        rs.getString("name"),
+                        rs.getString("email"),
+                        rs.getInt("grade")
+                ));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Failed to fetch users: " + e.getMessage());
+        }
+
+        return users;
+    }
+    public static boolean deleteUser(String userId) {
+        String sql = "DELETE FROM users WHERE userid = ?";
+
+        try (Connection conn = DatabaseConnection.connect();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+            pstmt.setString(1, userId);
+            int rowsAffected = pstmt.executeUpdate();
+
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.err.println("Failed to delete user: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public static boolean insertUser(User user, String password) {
+        String insertSQL = "INSERT INTO users (userid, name, email, grade, password) VALUES (?, ?, ?, ?, ?)";
+
+        try (Connection connection = DatabaseConnection.connect();
+             PreparedStatement pstmt = connection.prepareStatement(insertSQL)) {
+
+            pstmt.setString(1, user.getId());
+            pstmt.setString(2, user.getName());
+            pstmt.setString(3, user.getEmail());
+            pstmt.setInt(4, user.getGrade());
+            pstmt.setString(5, password); // Consider hashing the password in real applications
+
+            pstmt.executeUpdate();
+            System.out.println("User inserted successfully.");
+            return true;
+
+        } catch (SQLException e) {
+            System.out.println("Error inserting user: " + e.getMessage());
+            return false;
+        }
+    }
+    public static User getUserById(String userId) {
+        String selectSQL = "SELECT * FROM users WHERE userid = ?";
+
+        try (Connection connection = DatabaseConnection.connect();
+             PreparedStatement pstmt = connection.prepareStatement(selectSQL)) {
+
+            pstmt.setString(1, userId);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                String id = rs.getString("userid");
+                String name = rs.getString("name");
+                String email = rs.getString("email");
+                int grade = rs.getInt("grade");
+                // Password is typically not retrieved for display purposes
+                return new User(id, name, email, grade);
+            }
+
+        } catch (SQLException e) {
+            System.out.println("Error retrieving user by ID: " + e.getMessage());
+        }
+
+        return null; // User not found
+    }
 
 
 
