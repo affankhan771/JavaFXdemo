@@ -5,15 +5,20 @@
 <VBox xmlns="http://javafx.com/javafx/11.0.2"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="com.example.javafxdemo.ui.IdeaTrackingController"
-      alignment="TOP_CENTER" spacing="20" style="-fx-background-color: black; -fx-padding: 20px;">
+      alignment="TOP_CENTER" spacing="25" style="-fx-background-color: #F4F5F7; -fx-padding: 30px;">
 
     <!-- Title -->
-    <Label text="Idea Tracking" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: white;" />
+    <Label text="Idea Tracking"
+           style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #1F2937;" />
 
     <!-- Dropdown for Selecting an Idea -->
-    <Label text="Select Idea:" style="-fx-text-fill: white;" />
-    <ComboBox fx:id="ideaDropdown" promptText="Choose an idea to track" />
+    <Label text="Select Idea:"
+           style="-fx-text-fill: #1F2937; -fx-font-size: 16px; -fx-padding: 0 0 5 0;" />
+    <ComboBox fx:id="ideaDropdown" promptText="Choose an idea to track"
+              style="-fx-background-color: white; -fx-border-color: #6B778C; -fx-border-radius: 8px; -fx-padding: 5px;" />
 
     <!-- Roadmap Graph Container -->
-    <ScrollPane fx:id="roadmapContainer" style="-fx-background-color: black; -fx-border-color: #555555; -fx-border-width: 2px;" />
+    <ScrollPane fx:id="roadmapContainer"
+                fitToWidth="true" fitToHeight="true"
+                style="-fx-background-color: #E4E7EB; -fx-border-color: #6B778C; -fx-border-radius: 8px; -fx-padding: 10px;" />
 </VBox>

@@ -2,41 +2,54 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.VBox?>
-
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.GridPane?>
 
 <VBox xmlns:fx="http://javafx.com/fxml" fx:controller="com.example.javafxdemo.ui.IdeaSubmissionController"
-      alignment="CENTER" spacing="15" style="-fx-background-color: black; -fx-padding: 20px;">
-    <Label text="Drug Submission Form" style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: white;" />
+      alignment="TOP_CENTER" spacing="20" style="-fx-background-color: #F4F5F7; -fx-padding: 30px;">
 
-    <Label text="Drug Name:" style="-fx-text-fill: white;" />
-    <TextField fx:id="drugNameField" promptText="Enter the drug name" />
+    <!-- Title Section -->
+    <Label text="Drug Submission Form"
+           style="-fx-font-size: 30px; -fx-font-weight: bold; -fx-text-fill: #2C2C2C;" />
 
-    <Label text="Description:" style="-fx-text-fill: white;" />
-    <TextArea fx:id="descriptionField" promptText="Enter a brief description of the drug"
-              wrapText="true" prefHeight="100" />
+    <!-- Form Section -->
+    <GridPane hgap="10" vgap="15" style="-fx-alignment: CENTER; -fx-padding: 10;">
+        <!-- Drug Name -->
+        <Label text="Drug Name:" style="-fx-text-fill: #2C2C2C; -fx-font-size: 14px;" />
+        <TextField fx:id="drugNameField" promptText="Enter the drug name"
+                   GridPane.columnIndex="1"
+                   style="-fx-background-color: white; -fx-border-color: #6B778C; -fx-border-radius: 5px;" />
 
-    <Label text="Drug Category:" style="-fx-text-fill: white;" />
+        <!-- Description -->
+        <Label text="Description:" style="-fx-text-fill: #2C2C2C; -fx-font-size: 14px;" GridPane.rowIndex="1" />
+        <TextArea fx:id="descriptionField" promptText="Enter a brief description of the drug"
+                  wrapText="true" prefHeight="100"
+                  GridPane.columnIndex="1" GridPane.rowIndex="1"
+                  style="-fx-background-color: white; -fx-border-color: #6B778C; -fx-border-radius: 5px;" />
 
-    <ComboBox fx:id="categoryDropdown" promptText="Select a category">
+        <!-- Drug Category -->
+        <Label text="Drug Category:" style="-fx-text-fill: #2C2C2C; -fx-font-size: 14px;" GridPane.rowIndex="2" />
+        <ComboBox fx:id="categoryDropdown" promptText="Select a category"
+                  GridPane.columnIndex="1" GridPane.rowIndex="2"
+                  style="-fx-background-color: white; -fx-border-color: #6B778C; -fx-border-radius: 5px;" />
 
-        <!--<items>
-            <FXCollections fx:factory="observableArrayList">
-                <String fx:value="Analgesic" />
-                <String fx:value="Antibiotic" />
-                <String fx:value="Antiseptic" />
-                <String fx:value="Vaccine" />
-                <String fx:value="Others" />
-            </FXCollections>
-        </items>
-        -->
-    </ComboBox>
+        <!-- Chemical Formula -->
+        <Label text="Chemical Formula:" style="-fx-text-fill: #2C2C2C; -fx-font-size: 14px;" GridPane.rowIndex="3" />
+        <TextField fx:id="formulaField" promptText="Enter the chemical formula"
+                   GridPane.columnIndex="1" GridPane.rowIndex="3"
+                   style="-fx-background-color: white; -fx-border-color: #6B778C; -fx-border-radius: 5px;" />
 
-    <Label text="Chemical Formula:" style="-fx-text-fill: white;" />
-    <TextField fx:id="formulaField" promptText="Enter the chemical formula" />
+        <!-- Estimated Price -->
+        <Label text="Estimated Price (USD):" style="-fx-text-fill: #2C2C2C; -fx-font-size: 14px;" GridPane.rowIndex="4" />
+        <TextField fx:id="priceField" promptText="Enter the estimated price"
+                   GridPane.columnIndex="1" GridPane.rowIndex="4"
+                   style="-fx-background-color: white; -fx-border-color: #6B778C; -fx-border-radius: 5px;" />
+    </GridPane>
 
-    <Label text="Estimated Price (USD):" style="-fx-text-fill: white;" />
-    <TextField fx:id="priceField" promptText="Enter the estimated price" />
-
-    <Button text="Submit" style="-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 14px;"
-            onAction="#handleSubmit" />
+    <!-- Action Section -->
+    <HBox spacing="15" style="-fx-alignment: CENTER;">
+        <Button text="Submit"
+                style="-fx-background-color: #0078D4; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5px;"
+                onAction="#handleSubmit" />
+    </HBox>
 </VBox>

@@ -57,19 +57,19 @@
                 </BarChart>
             </HBox>
 
-            <!-- Action Buttons Section -->
+           <!-- &lt;!&ndash; Action Buttons Section &ndash;&gt;
             <HBox spacing="20" style="-fx-alignment: center;">
                 <Button text="Submit a New Idea" fx:id="submitIdeaButton" style="-fx-background-color: #66ccff; -fx-text-fill: white; -fx-font-size: 16; -fx-padding: 10 20;" />
                 <Button text="Pending Approvals" fx:id="pendingApprovalsButton" style="-fx-background-color: #ffd966; -fx-text-fill: black; -fx-font-size: 16; -fx-padding: 10 20;" />
                 <Button text="Regulatory Compliance" fx:id="regulatoryComplianceButton" style="-fx-background-color: #99cc99; -fx-text-fill: black; -fx-font-size: 16; -fx-padding: 10 20;" />
-            </HBox>
+            </HBox>-->
 
         </VBox>
     </center>
 
-    <!-- Footer Section -->
+    <!--&lt;!&ndash; Footer Section &ndash;&gt;
     <bottom>
         <Label text="Total ideas in the system: 500 | Approved: 300" style="-fx-padding: 10; -fx-background-color: #dddddd;" />
     </bottom>
-
+-->
 </BorderPane>

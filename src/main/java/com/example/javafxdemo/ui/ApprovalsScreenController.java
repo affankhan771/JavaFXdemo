@@ -44,13 +44,10 @@ public class ApprovalsScreenController {
     private TextArea commentBox;
 
     public void initialize() {
-        // Initialize filter/sort options
         filterSortDropdown.getItems().clear();
 
-        // Get user rank from UserSession
         int userRank = UserSession.getInstance().getGrade();
 
-        // Adjust filter options and idea loading based on rank
         if (userRank == 1) {
             // C-level user
             filterSortDropdown.getItems().addAll("Pending Approval");
@@ -60,13 +57,12 @@ public class ApprovalsScreenController {
             filterSortDropdown.getItems().addAll("Pending Approval");
             loadIdeasForMLevel();
         } else {
-            // G-level user or others
+            // G-level user
             filterSortDropdown.getItems().addAll("No Approval Access");
             ideaCardsContainer.getChildren().clear();
             showAlert("Access Denied", "You do not have permission to approve ideas.", AlertType.WARNING);
         }
 
-        // Add listener for filter/sort dropdown selection if needed
         filterSortDropdown.setOnAction(e -> {
             String selectedOption = filterSortDropdown.getValue();
             if (userRank == 1) {
@@ -76,7 +72,6 @@ public class ApprovalsScreenController {
             }
         });
 
-        // Add listener for search bar
         searchBar.setOnAction(e -> {
             String input = searchBar.getText();
             if (!input.isEmpty()) {
@@ -103,10 +98,13 @@ public class ApprovalsScreenController {
         ideaCardsContainer.getChildren().clear();
         List<Idea> ideas = DataOperations.getIdeasByStatus(1); // Status = 1 for M-level approval
         for (Idea idea : ideas) {
-            VBox card = createIdeaCard(idea);
-            ideaCardsContainer.getChildren().add(card);
+            if (idea.getStatus() == 1) { // Only load pending M-level approval ideas
+                VBox card = createIdeaCard(idea);
+                ideaCardsContainer.getChildren().add(card);
+            }
         }
     }
+
 
     private void loadIdeasForCLevel() {
         ideaCardsContainer.getChildren().clear();
@@ -177,6 +175,7 @@ public class ApprovalsScreenController {
         disapproveButton.setDisable(false);
     }
 
+
     public void onApproveButtonClicked() {
         if (selectedIdea != null) {
             int userRank = UserSession.getInstance().getGrade();
@@ -191,15 +190,16 @@ public class ApprovalsScreenController {
 
                 confirmAlert.showAndWait().ifPresent(response -> {
                     if (response == ButtonType.OK) {
-                        // Increment the status by 1
-                        int newStatus = selectedIdea.getStatus() + 1;
+                        int newStatus = selectedIdea.getStatus() + 1; // Increment the status
                         boolean success = DataOperations.updateIdeaStatus(selectedIdea.getIdeaId(), newStatus);
                         if (success) {
                             showAlert("Success", "Idea approved successfully.", AlertType.INFORMATION);
+
+                            // Refresh based on rank
                             if (userRank == 1) {
                                 loadIdeasForCLevel();
                             } else if (userRank == 2) {
-                                loadIdeasForMLevel();
+                                loadIdeasForMLevel(); // Ensure this reloads ideas with updated status
                             }
                             approveButton.setDisable(true);
                             disapproveButton.setDisable(true);
@@ -213,6 +213,7 @@ public class ApprovalsScreenController {
             }
         }
     }
+
 
 
     public void onDisapproveButtonClicked() {

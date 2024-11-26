@@ -64,7 +64,7 @@ public class IdeaTrackingController {
                 "Approval by M-Level Officers",
                 "Approval by C-Level Officers",
                 "Regulatory Compliance",
-                "Sales Forecast",
+                "Regulatory Approval",
                 "Testing",
                 "Launch"
         };

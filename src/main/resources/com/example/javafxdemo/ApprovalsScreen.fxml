@@ -4,46 +4,61 @@
 
 <BorderPane xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.example.javafxdemo.ui.ApprovalsScreenController"
-            style="-fx-padding: 20; -fx-background-color: #333333;">
+            style="-fx-padding: 20; -fx-background-color: #F4F5F7;">
 
     <!-- Header Section -->
     <top>
-        <VBox spacing="10" style="-fx-padding: 10; -fx-background-color: #222222;">
-            <Label text="Idea Approval Dashboard" style="-fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: white;" />
-            <Label text="Review and approve or disapprove submitted ideas." style="-fx-font-size: 14; -fx-text-fill: white;" />
+        <VBox spacing="15" style="-fx-padding: 15; -fx-background-color: #1F2937; -fx-border-radius: 8px;">
+            <Label text="Idea Approval Dashboard"
+                   style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #F9FAFB;" />
+            <Label text="Review and approve or disapprove submitted ideas."
+                   style="-fx-font-size: 14; -fx-text-fill: #D1D5DB;" />
             <HBox spacing="10">
-                <TextField fx:id="searchBar" promptText="Search by title, ID, or creator" />
-                <ComboBox fx:id="filterSortDropdown" promptText="Filter/Sort (e.g., Pending)" />
+                <TextField fx:id="searchBar" promptText="Search by title, ID, or creator"
+                           style="-fx-background-color: #FFFFFF; -fx-border-color: #D1D5DB; -fx-border-radius: 6px;" />
+                <ComboBox fx:id="filterSortDropdown" promptText="Filter/Sort (e.g., Pending)"
+                          style="-fx-background-color: #FFFFFF; -fx-border-color: #D1D5DB; -fx-border-radius: 6px;" />
             </HBox>
         </VBox>
     </top>
 
     <!-- Main Content Section -->
     <center>
-        <SplitPane style="-fx-background-color: #333333;" dividerPositions="0.3">
+        <SplitPane style="-fx-background-color: transparent;" dividerPositions="0.35">
 
             <!-- Left Panel: List of Ideas -->
-            <VBox fx:id="ideaListPanel" spacing="10" style="-fx-padding: 10;">
-                <Label text="Ideas" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;" />
-                <ScrollPane fitToWidth="true" fitToHeight="true" style="-fx-background-color: transparent;">
+            <VBox fx:id="ideaListPanel" spacing="15"
+                  style="-fx-padding: 15; -fx-background-color: #FFFFFF; -fx-border-radius: 8px; -fx-border-color: #D1D5DB; -fx-border-width: 1px;">
+                <Label text="Ideas"
+                       style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #1F2937;" />
+                <ScrollPane fitToWidth="true" fitToHeight="true"
+                            style="-fx-background-color: transparent; -fx-border-color: #E5E7EB; -fx-border-radius: 8px;">
                     <VBox fx:id="ideaCardsContainer" spacing="10" style="-fx-padding: 10;" />
                 </ScrollPane>
             </VBox>
 
             <!-- Right Panel: Idea Details -->
-            <VBox fx:id="ideaDetailsPanel" spacing="10" style="-fx-padding: 10; -fx-background-color: #444444;">
-                <Label text="Idea Details" fx:id="ideaTitleLabel" style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: white;" />
-                <Label fx:id="ideaDetailedDescription" wrapText="true" style="-fx-font-size: 14; -fx-text-fill: white;" />
-                <Label fx:id="ideaCreatorDetails" wrapText="true" style="-fx-font-size: 14; -fx-text-fill: white;" />
+            <VBox fx:id="ideaDetailsPanel" spacing="15"
+                  style="-fx-padding: 15; -fx-background-color: #F9FAFB; -fx-border-radius: 8px; -fx-border-color: #E5E7EB; -fx-border-width: 1px;">
+                <Label text="Idea Details" fx:id="ideaTitleLabel"
+                       style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #1F2937;" />
+                <Label fx:id="ideaDetailedDescription" wrapText="true"
+                       style="-fx-font-size: 14; -fx-text-fill: #4B5563;" />
+                <Label fx:id="ideaCreatorDetails" wrapText="true"
+                       style="-fx-font-size: 14; -fx-text-fill: #4B5563;" />
 
                 <!-- Action Buttons -->
                 <HBox spacing="10" style="-fx-alignment: bottom-right;">
-                    <Button text="Approve" fx:id="approveButton" style="-fx-background-color: green; -fx-text-fill: white;" />
-                    <Button text="Disapprove" fx:id="disapproveButton" style="-fx-background-color: red; -fx-text-fill: white;" />
+                    <Button text="Approve" fx:id="approveButton"
+                            onAction="#onApproveButtonClicked"
+                            style="-fx-background-color: #10B981; -fx-text-fill: white; -fx-font-size: 14; -fx-border-radius: 6px;" />
+                    <Button text="Disapprove" fx:id="disapproveButton"
+                            onAction="#onDisapproveButtonClicked"
+                            style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-font-size: 14; -fx-border-radius: 6px;" />
                 </HBox>
-                <TextArea fx:id="commentBox" promptText="Add comments (required if disapproving)" wrapText="true" style="-fx-font-size: 14;" />
+                <TextArea fx:id="commentBox" promptText="Add comments (required if disapproving)" wrapText="true"
+                          style="-fx-background-color: #FFFFFF; -fx-border-color: #D1D5DB; -fx-border-radius: 6px;" />
             </VBox>
         </SplitPane>
     </center>
-
 </BorderPane>

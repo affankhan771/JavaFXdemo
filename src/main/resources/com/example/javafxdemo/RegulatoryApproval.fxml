@@ -4,17 +4,17 @@
 
 <VBox xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
       fx:controller="com.example.javafxdemo.ui.RegulatoryApprovalController"
-      spacing="20" style="-fx-padding: 20; -fx-background-color: #2C3E50;">
+      spacing="20" style="-fx-padding: 20; -fx-background-color: #F0F4F8;"> <!-- Neutral background color -->
 
     <!-- Header Section -->
     <HBox alignment="CENTER" style="-fx-padding: 10;">
-        <Label text="Regulatory Approval Panel" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: white;" />
+        <Label text="Regulatory Approval Panel" style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #1F2937;" /> <!-- Dark neutral for title -->
     </HBox>
 
     <!-- Idea Selection Section -->
     <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-padding: 10;">
-        <Label text="Select Idea:" style="-fx-font-size: 16; -fx-text-fill: white;" />
-        <ComboBox fx:id="ideaSelectionComboBox" promptText="Select an Idea" prefWidth="400"/>
+        <Label text="Select Idea:" style="-fx-font-size: 16; -fx-text-fill: #4B5563;" /> <!-- Soft neutral for labels -->
+        <ComboBox fx:id="ideaSelectionComboBox" promptText="Select an Idea" prefWidth="400" style="-fx-background-color: white; -fx-border-color: #D1D5DB; -fx-border-radius: 5px;" /> <!-- Light neutral background and border -->
     </HBox>
 
     <!-- Separator -->
@@ -23,40 +23,40 @@
     <!-- Idea Details Section -->
     <GridPane hgap="10" vgap="10" style="-fx-padding: 10;">
         <!-- Idea Information -->
-        <Label text="Idea ID:" style="-fx-font-size: 14; -fx-text-fill: white;" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
-        <Label fx:id="ideaIDLabel" text="N/A" style="-fx-font-size: 14; -fx-text-fill: white;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+        <Label text="Idea ID:" style="-fx-font-size: 14; -fx-text-fill: #4B5563;" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+        <Label fx:id="ideaIDLabel" text="N/A" style="-fx-font-size: 14; -fx-text-fill: #4B5563;" GridPane.rowIndex="0" GridPane.columnIndex="1"/>
 
-        <Label text="Idea Name:" style="-fx-font-size: 14; -fx-text-fill: white;" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
-        <Label fx:id="ideaNameLabel" text="N/A" style="-fx-font-size: 14; -fx-text-fill: white;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+        <Label text="Idea Name:" style="-fx-font-size: 14; -fx-text-fill: #4B5563;" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+        <Label fx:id="ideaNameLabel" text="N/A" style="-fx-font-size: 14; -fx-text-fill: #4B5563;" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
 
         <!-- User Information -->
-        <Label text="Submitted By (User ID):" style="-fx-font-size: 14; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
-        <Label fx:id="userIDLabel" text="N/A" style="-fx-font-size: 14; -fx-text-fill: white;" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+        <Label text="Submitted By (User ID):" style="-fx-font-size: 14; -fx-text-fill: #4B5563;" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+        <Label fx:id="userIDLabel" text="N/A" style="-fx-font-size: 14; -fx-text-fill: #4B5563;" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
 
-        <Label text="Submitted By (User Name):" style="-fx-font-size: 14; -fx-text-fill: white;" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
-        <Label fx:id="userNameLabel" text="N/A" style="-fx-font-size: 14; -fx-text-fill: white;" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+        <Label text="Submitted By (User Name):" style="-fx-font-size: 14; -fx-text-fill: #4B5563;" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+        <Label fx:id="userNameLabel" text="N/A" style="-fx-font-size: 14; -fx-text-fill: #4B5563;" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
 
         <!-- Compliance Details -->
-        <Label text="Compliance Requirements:" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: white;" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
+        <Label text="Compliance Requirements:" style="-fx-font-size: 14; -fx-font-weight: bold; -fx-text-fill: #1F2937;" GridPane.rowIndex="4" GridPane.columnIndex="0" GridPane.columnSpan="2"/>
 
-        <CheckBox fx:id="safetyAssessmentToggle" text="Safety assessment conducted?" style="-fx-text-fill: white;" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
-        <CheckBox fx:id="clinicalTrialsToggle" text="Clinical trials conducted?" style="-fx-text-fill: white;" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
-        <CheckBox fx:id="packagingApprovedToggle" text="Packaging approved for pharmaceutical use?" style="-fx-text-fill: white;" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
-        <CheckBox fx:id="labelContainsInfoToggle" text="Label contains all required information?" style="-fx-text-fill: white;" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
-        <CheckBox fx:id="productApprovedToggle" text="Product approved for distribution in target market?" style="-fx-text-fill: white;" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
-        <CheckBox fx:id="agreeTermsCheckbox" text="Agree to terms and conditions." style="-fx-text-fill: white;" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
-        <CheckBox fx:id="finalComplianceToggle" text="Final compliance confirmation." style="-fx-text-fill: white;" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
+        <CheckBox fx:id="safetyAssessmentToggle" text="Safety assessment conducted?" style="-fx-text-fill: #4B5563;" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+        <CheckBox fx:id="clinicalTrialsToggle" text="Clinical trials conducted?" style="-fx-text-fill: #4B5563;" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+        <CheckBox fx:id="packagingApprovedToggle" text="Packaging approved for pharmaceutical use?" style="-fx-text-fill: #4B5563;" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+        <CheckBox fx:id="labelContainsInfoToggle" text="Label contains all required information?" style="-fx-text-fill: #4B5563;" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        <CheckBox fx:id="productApprovedToggle" text="Product approved for distribution in target market?" style="-fx-text-fill: #4B5563;" GridPane.rowIndex="7" GridPane.columnIndex="0"/>
+        <CheckBox fx:id="agreeTermsCheckbox" text="Agree to terms and conditions." style="-fx-text-fill: #4B5563;" GridPane.rowIndex="7" GridPane.columnIndex="1"/>
+        <CheckBox fx:id="finalComplianceToggle" text="Final compliance confirmation." style="-fx-text-fill: #4B5563;" GridPane.rowIndex="8" GridPane.columnIndex="0"/>
     </GridPane>
 
     <!-- Action Buttons -->
     <HBox spacing="20" alignment="CENTER" style="-fx-padding: 10;">
-        <Button text="Approve" fx:id="approveButton" style="-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-size: 14px;" prefWidth="100"/>
-        <Button text="Reject" fx:id="rejectButton" style="-fx-background-color: #C0392B; -fx-text-fill: white; -fx-font-size: 14px;" prefWidth="100"/>
+        <Button text="Approve" fx:id="approveButton" style="-fx-background-color: #27AE60; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5px;" prefWidth="100"/> <!-- Green accent for approve button -->
+        <Button text="Reject" fx:id="rejectButton" style="-fx-background-color: #C0392B; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 5px;" prefWidth="100"/> <!-- Red accent for reject button -->
     </HBox>
 
     <!-- Feedback Section -->
     <HBox alignment="CENTER">
-        <Label fx:id="feedbackLabel" text="" style="-fx-font-size: 14; -fx-text-fill: yellow;" />
+        <Label fx:id="feedbackLabel" text="" style="-fx-font-size: 14; -fx-text-fill: #F59E0B;" /> <!-- Accent color for feedback -->
     </HBox>
 
 </VBox>

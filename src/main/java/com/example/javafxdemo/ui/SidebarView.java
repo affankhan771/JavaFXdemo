@@ -21,13 +21,13 @@ public class SidebarView {
                 "Dashboard",
                 "Idea Submission",
                 "Idea Tracking",
-                "Review Testing",
+                "Idea Approval",
                 "Regulatory Compliance",
-                "Approvals new",
-                "Testing",
-                "Sales Forecast",
-                "Manage Users",
                 "Regulatory Approvals",
+                "Manage Users",
+                "Sales Forecast",
+                "Testing",
+                "Review Testing",
                 "Launch"
         };
 
@@ -38,8 +38,6 @@ public class SidebarView {
             Button optionButton = new Button(sidebarOptions[i]);
             optionButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 14px; " +
                     "-fx-font-weight: bold; -fx-border-radius: 5px; -fx-background-radius: 5px; -fx-min-width: 160px;");
-            optionButton.setOnMouseEntered(e -> optionButton.setStyle("-fx-background-color: #777777; -fx-text-fill: white;"));
-            optionButton.setOnMouseExited(e -> optionButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white;"));
 
             // Handle button click actions based on the index
             final int index = i;

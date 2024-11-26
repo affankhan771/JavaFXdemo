@@ -14,14 +14,12 @@ public class NavBarView {
         navBar.setStyle("-fx-background-color: #333333; -fx-padding: 10px;");
         navBar.setAlignment(Pos.CENTER_LEFT);
 
-        Label logo = new Label("MyCompany");
+        Label logo = new Label("Drug Dev");
         logo.setStyle("-fx-font-size: 18px; -fx-text-fill: white; -fx-font-weight: bold;");
 
-        Button profileButton = new Button("V");
+        Button profileButton = new Button("Profile");
         profileButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white; -fx-font-size: 14px; " +
                 "-fx-font-weight: bold; -fx-border-radius: 50px; -fx-background-radius: 50px; -fx-min-width: 40px; -fx-min-height: 40px;");
-        profileButton.setOnMouseEntered(e -> profileButton.setStyle("-fx-background-color: #777777; -fx-text-fill: white;"));
-        profileButton.setOnMouseExited(e -> profileButton.setStyle("-fx-background-color: #555555; -fx-text-fill: white;"));
 
         ContextMenu dropdownMenu = new ContextMenu();
         MenuItem logoutItem = new MenuItem("Logout");

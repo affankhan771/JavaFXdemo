@@ -70,7 +70,7 @@ public class DashboardScreenController {
 //        );
 
         // Button Actions
-        submitIdeaButton.setOnAction(event -> {
+        /*submitIdeaButton.setOnAction(event -> {
             // Logic for navigating to Submit Idea screen
         });
 
@@ -80,7 +80,7 @@ public class DashboardScreenController {
 
         regulatoryComplianceButton.setOnAction(event -> {
             // Logic for navigating to Regulatory Compliance screen
-        });
+        });*/
     }
 
     private void setupBarChart() {

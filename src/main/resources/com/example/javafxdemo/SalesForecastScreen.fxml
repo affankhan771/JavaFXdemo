@@ -13,8 +13,8 @@
         <HBox spacing="20" alignment="CENTER" style="-fx-background-color: lightblue; -fx-padding: 10px;">
             <Label text="Sales Forecast" style="-fx-font-size: 24px; -fx-font-weight: bold;"/>
             <Pane HBox.hgrow="ALWAYS"/>
-            <Button text="Home" onAction="#navigateToHome" style="-fx-font-size: 14px;"/>
-            <Button text="Sales History" onAction="#navigateToSalesHistory" style="-fx-font-size: 14px;"/>
+            <!--<Button text="Home" onAction="#navigateToHome" style="-fx-font-size: 14px;"/>
+            <Button text="Sales History" onAction="#navigateToSalesHistory" style="-fx-font-size: 14px;"/>-->
         </HBox>
     </top>
 

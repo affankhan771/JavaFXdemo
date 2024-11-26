@@ -80,8 +80,6 @@ public class LoginPage extends Application {
                 }
         );
 
-
-
         // Background Image
         Image backgroundImage = new Image("file:C:\\Users\\admin\\IdeaProjects\\JavaFXdemo\\src\\main\\resources\\bg.png");
         BackgroundImage bgImage = new BackgroundImage(
@@ -99,9 +97,6 @@ public class LoginPage extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-
-
 
     private DashboardView dashboardView = new DashboardView();
     private void openDashboard(Stage primaryStage) {
@@ -134,6 +129,27 @@ public class LoginPage extends Application {
             contentArea.getChildren().add(ideaTrackingView.createIdeaTrackingScreen(primaryStage));
 
         } else if (optionIndex == 3) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/ApprovalsScreen.fxml"));
+            BorderPane approvalsScreen = null;
+            try {
+                approvalsScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Add to the content area
+            contentArea.getChildren().add(approvalsScreen);
+        } else if (optionIndex == 8) { // Regulatory Compliance
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/TestingScreen.fxml"));
+            StackPane testingScreen;
+            try {
+                testingScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException("Error loading Testing Screen: " + e.getMessage(), e);
+            }
+            contentArea.getChildren().clear(); // Clear existing content
+            contentArea.getChildren().add(testingScreen);
+        }else if (optionIndex == 9) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/TestingReviewScreen.fxml"));
             StackPane testingReviewScreen;
             try {
@@ -143,7 +159,18 @@ public class LoginPage extends Application {
             }
             contentArea.getChildren().clear(); // Clear existing content
             contentArea.getChildren().add(testingReviewScreen);
-        } else if (optionIndex == 4) { // Regulatory Compliance
+        }else if (optionIndex == 0) {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/DashboardScreen.fxml"));
+            BorderPane dashboardScreen = null;
+            try {
+                dashboardScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            // Add to the content area
+            contentArea.getChildren().add(dashboardScreen);
+        } else if (optionIndex == 4) {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/RegulatoryCompliance.fxml"));
             VBox regulatoryComplianceScreen;
             try {
@@ -160,63 +187,8 @@ public class LoginPage extends Application {
 
             // Add to the content area
             contentArea.getChildren().add(scrollPane);
-        }else if (optionIndex == 5) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/ApprovalsScreen.fxml"));
-            BorderPane approvalsScreen = null;
-            try {
-                approvalsScreen = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
 
-            // Add to the content area
-            contentArea.getChildren().add(approvalsScreen);
-        }else if (optionIndex == 0) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/DashboardScreen.fxml"));
-            BorderPane dashboardScreen = null;
-            try {
-                dashboardScreen = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-
-            // Add to the content area
-            contentArea.getChildren().add(dashboardScreen);
-        } else if (optionIndex == 6) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/TestingScreen.fxml"));
-            StackPane testingScreen;
-            try {
-                testingScreen = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException("Error loading Testing Screen: " + e.getMessage(), e);
-            }
-            contentArea.getChildren().clear(); // Clear existing content
-            contentArea.getChildren().add(testingScreen);
-
-        } else if (optionIndex == 7) { // Sales Forecast Screen
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/SalesForecastScreen.fxml"));
-            BorderPane salesForecastScreen = null;
-            try {
-                salesForecastScreen = loader.load();
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new RuntimeException("Error loading Sales Forecast Screen: " + e.getMessage(), e);
-            }
-
-            contentArea.getChildren().add(salesForecastScreen);
-        }
-        else if (optionIndex == 8) { // Manage Users Screen
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/ManageUsers.fxml"));
-            VBox manageUsersScreen;
-            try {
-                manageUsersScreen = loader.load();
-            } catch (IOException e) {
-                throw new RuntimeException("Error loading Manage Users screen: " + e.getMessage(), e);
-            }
-
-            contentArea.getChildren().add(manageUsersScreen);
-        }
-        else if (optionIndex == 9) { // Regulatory Approval Screen
+        } else if (optionIndex == 5) { // Sales Forecast Screen
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/RegulatoryApproval.fxml"));
             VBox regulatoryApprovalScreen;
             try {
@@ -227,6 +199,29 @@ public class LoginPage extends Application {
 
             contentArea.getChildren().clear(); // Clear existing content
             contentArea.getChildren().add(regulatoryApprovalScreen);
+        }
+        else if (optionIndex == 6) { // Manage Users Screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/ManageUsers.fxml"));
+            VBox manageUsersScreen;
+            try {
+                manageUsersScreen = loader.load();
+            } catch (IOException e) {
+                throw new RuntimeException("Error loading Manage Users screen: " + e.getMessage(), e);
+            }
+
+            contentArea.getChildren().add(manageUsersScreen);
+        }
+        else if (optionIndex == 7) { // Regulatory Approval Screen
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/SalesForecastScreen.fxml"));
+            BorderPane salesForecastScreen = null;
+            try {
+                salesForecastScreen = loader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new RuntimeException("Error loading Sales Forecast Screen: " + e.getMessage(), e);
+            }
+
+            contentArea.getChildren().add(salesForecastScreen);
         }
         else if (optionIndex == 10) { // Launch Screen
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/javafxdemo/LaunchScreen.fxml"));
@@ -256,64 +251,6 @@ public class LoginPage extends Application {
         Scene newScene = new Scene(mainLayout, 900, 600);
         primaryStage.setScene(newScene);
     }
-
-
-    private VBox createApprovalBox(Stage primaryStage) {
-        // VBox to hold idea entries
-        VBox ideasBox = new VBox(20);
-        ideasBox.setPadding(new Insets(20));
-        ideasBox.setStyle("-fx-background-color: #333333;");
-
-        // Mock ideas data
-        List<String[]> mockIdeas = List.of(
-                new String[]{"Idea 1", "Description for idea 1", "Drug X", "Category A", "C6H12O6", "120"},
-                new String[]{"Idea 2", "Description for idea 2", "Drug Y", "Category B", "H2O", "200"},
-                new String[]{"Idea 3", "Description for idea 3", "Drug Z", "Category C", "NaCl", "300"},
-                new String[]{"Idea 4", "Description for idea 4", "Drug A", "Category D", "CH4", "400"}
-                // Add as many ideas as required
-        );
-
-        for (String[] idea : mockIdeas) {
-            // Each idea box
-            VBox ideaBox = new VBox(10);
-            ideaBox.setPadding(new Insets(15));
-            ideaBox.setStyle("-fx-background-color: #555555; -fx-border-radius: 5px; -fx-background-radius: 5px;");
-
-            // Idea details
-            Label ideaName = new Label("Idea Name: " + idea[0]);
-            ideaName.setStyle("-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: white;");
-            Label ideaDesc = new Label("Description: " + idea[1]);
-            ideaDesc.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
-            Label drugDetails = new Label("Drug Name: " + idea[2] + ", Category: " + idea[3] + ", Formula: " + idea[4] + ", Price: $" + idea[5]);
-            drugDetails.setStyle("-fx-font-size: 14px; -fx-text-fill: white;");
-
-            // Buttons for approval
-            HBox buttons = new HBox(10);
-            Button approveButton = new Button("Approve");
-            approveButton.setStyle("-fx-background-color: green; -fx-text-fill: white; -fx-font-weight: bold;");
-            Button disapproveButton = new Button("Disapprove");
-            disapproveButton.setStyle("-fx-background-color: red; -fx-text-fill: white; -fx-font-weight: bold;");
-
-            // Button actions
-            approveButton.setOnAction(e -> {
-                ideaBox.setStyle("-fx-background-color: green; -fx-border-radius: 5px; -fx-background-radius: 5px;");
-                approveButton.setDisable(true);
-                disapproveButton.setDisable(true);
-            });
-            disapproveButton.setOnAction(e -> {
-                ideaBox.setStyle("-fx-background-color: red; -fx-border-radius: 5px; -fx-background-radius: 5px;");
-                approveButton.setDisable(true);
-                disapproveButton.setDisable(true);
-            });
-
-            buttons.getChildren().addAll(approveButton, disapproveButton);
-            ideaBox.getChildren().addAll(ideaName, ideaDesc, drugDetails, buttons);
-            ideasBox.getChildren().add(ideaBox);
-        }
-
-        return ideasBox;
-    }
-
 
     public static void main(String[] args) {
         DatabaseConnection.connect();
