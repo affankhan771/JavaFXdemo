@@ -2,11 +2,11 @@ package com.example.javafxdemo.bl;
 
 import javafx.scene.control.Button;
 
-public class User {
+public  class  User {
     private String id;
     private String name;
     private String email;
-    private int grade;
+    protected int grade;
     private Button removeButton;
 
     // Constructor without removeButton
@@ -19,6 +19,13 @@ public class User {
 
     // Constructor with removeButton
     public User(String id, String name, String email, int grade, Button removeButton) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.grade = grade;
+        this.removeButton = removeButton;
+    }
+    public User(String id, String name, String email, Button removeButton) {
         this.id = id;
         this.name = name;
         this.email = email;
