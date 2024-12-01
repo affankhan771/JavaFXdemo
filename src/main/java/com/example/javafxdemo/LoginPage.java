@@ -81,7 +81,7 @@ public class LoginPage extends Application {
         );
 
         // Background Image
-        Image backgroundImage = new Image("C:\\Users\\abdul\\IdeaProjects\\JavaFXdemo\\src\\main\\resources\\bg.png");
+        Image backgroundImage = new Image("file:C:\\Users\\admin\\IdeaProjects\\JavaFXdemo\\src\\main\\resources\\bg.png");
         BackgroundImage bgImage = new BackgroundImage(
                 backgroundImage,
                 BackgroundRepeat.NO_REPEAT,

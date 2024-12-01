@@ -680,6 +680,21 @@ public class DataOperations {
         }
     }
 
+    public static int getTotalIdeasLaunched() {
+        // Example logic to fetch the total ideas count from the database
+        String query = "SELECT COUNT(*) FROM ideas WHERE status = 7";  // Adjust based on your schema
+        try (Connection conn = DatabaseConnection.connect();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(query)) {
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
     public static boolean insertUser(User user, String password) {
         String insertSQL = "INSERT INTO users (userid, name, email, grade, password) VALUES (?, ?, ?, ?, ?)";
 

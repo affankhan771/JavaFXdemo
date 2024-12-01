@@ -43,9 +43,18 @@
                 </VBox>
             </HBox>
 
+
+
             <!-- Graphical Representation Section -->
             <HBox spacing="20">
-                <PieChart fx:id="ideasPieChart" style="-fx-padding: 20; -fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10;" />
+                <HBox spacing="20" style="-fx-alignment: center-left; -fx-padding: 10;">
+                    <VBox spacing="10" style="-fx-padding: 20; -fx-background-color: #c593ff; -fx-border-radius: 10; -fx-background-radius: 10;">
+                        <Label text="Total Ideas Launched" style="-fx-font-size: 18; -fx-font-weight: bold;" />
+                        <Label fx:id="totalIdeasLaunchedCount" text="500" style="-fx-font-size: 36; -fx-font-weight: bold;" />
+                        <Label text="Ideas launched so far" style="-fx-font-size: 14;" />
+                    </VBox>
+                </HBox>
+
                 <BarChart fx:id="ideasBarChart" title="Ideas Per Month"
                           style="-fx-padding: 20; -fx-background-color: white; -fx-border-radius: 10; -fx-background-radius: 10;">
                     <xAxis>
@@ -56,6 +65,8 @@
                     </yAxis>
                 </BarChart>
             </HBox>
+
+
 
            <!-- &lt;!&ndash; Action Buttons Section &ndash;&gt;
             <HBox spacing="20" style="-fx-alignment: center;">

@@ -39,6 +39,9 @@ public class DashboardScreenController {
     @FXML
     private Button regulatoryComplianceButton;
 
+    @FXML
+    private Label totalIdeasLaunchedCount;
+
     // Initialize method should be properly closed
     public void initialize() {
         // Check if BarChart and axes are properly initialized
@@ -52,6 +55,11 @@ public class DashboardScreenController {
         int approvedIdeas = DataOperations.getApprovedIdeasCount();
         int rejectedIdeas = DataOperations.getRejectedIdeasCount();
         int pendingApprovals = DataOperations.getPendingApprovalsCount();
+
+        // In the initialize() method, add:
+        int totalIdeasLaunched = DataOperations.getTotalIdeasLaunched();  // Assuming there's a method for this.
+        //int totalIdeasLaunched = DataOperations.getTotalIdeasLaunched();
+        totalIdeasLaunchedCount.setText(String.valueOf(totalIdeasLaunched));
 
         totalIdeasCount.setText(String.valueOf(totalIdeas));
         approvedIdeasCount.setText(String.valueOf(approvedIdeas));
