@@ -1,5 +1,8 @@
 package com.example.javafxdemo.ui;
 
+import com.example.javafxdemo.bl.CLevel;
+import com.example.javafxdemo.bl.GLevel;
+import com.example.javafxdemo.bl.MLevel;
 import com.example.javafxdemo.bl.User;
 import com.example.javafxdemo.db.DataOperations;
 import javafx.collections.FXCollections;
@@ -122,9 +125,23 @@ public class ManageUsersController {
             showAlert("Input Error", "User ID already exists. Please choose a different ID.", Alert.AlertType.WARNING);
             return;
         }
+        User newUser;
+        if(grade==1){
+             newUser = new CLevel(id,name,email);
+            //CLevel newUser = new CLevel(id,name,email);
+        }
+        else if(grade==2){
+             newUser = new MLevel(id,name,email);
+
+        }
+        else  {
+             newUser = new GLevel(id,name,email);
+        }
 
         // Create User object
-        User newUser = new User(id, name, email, grade);
+      /// User newUser = new User(id, name, email);
+
+
 
         // Insert user into database
         boolean success = DataOperations.insertUser(newUser, password);

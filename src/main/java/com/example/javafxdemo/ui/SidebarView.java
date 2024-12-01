@@ -1,5 +1,6 @@
 package com.example.javafxdemo.ui;
 
+import com.example.javafxdemo.bl.UserSession;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -15,21 +16,31 @@ public class SidebarView {
         sidebar.setStyle("-fx-background-color: #333333; -fx-padding: 20px;");
         sidebar.setPrefWidth(200);
         sidebar.setAlignment(Pos.TOP_CENTER);
+        UserSession userSession = UserSession.getInstance();
+        String[] sidebarOptions;
+        if(userSession.getGrade()==4 ){
+           sidebarOptions = new String[]{
+                   "Regulatory Approval"
+           };
 
+
+        }
+        else {
+           sidebarOptions = new String[]{
+                   "Dashboard",
+                   "Idea Submission",
+                   "Idea Tracking",
+                   "Idea Approval",
+                   "Regulatory Compliance",
+                   "Manage Users",
+                   "Sales Forecast",
+                   "Testing",
+                   "Review Testing",
+                   "Launch"
+           };
+        }
         // Modify the sidebarOptions array to add more buttons
-        String[] sidebarOptions = {
-                "Dashboard",
-                "Idea Submission",
-                "Idea Tracking",
-                "Idea Approval",
-                "Regulatory Compliance",
-                "Regulatory Approvals",
-                "Manage Users",
-                "Sales Forecast",
-                "Testing",
-                "Review Testing",
-                "Launch"
-        };
+
 
         // Dynamically create the button array based on the sidebarOptions length
         Button[] optionButtons = new Button[sidebarOptions.length];

@@ -628,12 +628,33 @@ public class DataOperations {
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                users.add(new User(
-                        rs.getString("userid"),
-                        rs.getString("name"),
-                        rs.getString("email"),
-                        rs.getInt("grade")
-                ));
+            switch (rs.getInt("grade")) {
+                    case 1:
+                    users.add(new CLevel(
+                            rs.getString("userid"),
+                            rs.getString("name"),
+                            rs.getString("email")
+                    ));
+
+                    break;
+                    case 2:
+                        users.add(new MLevel(
+                                rs.getString("userid"),
+                                rs.getString("name"),
+                                rs.getString("email")
+                        ));
+
+                    break;
+                    case 3:
+                            users.add(new GLevel(
+                                    rs.getString("userid"),
+                                    rs.getString("name"),
+                                    rs.getString("email")
+                            ));
+
+                            break;
+
+            }
             }
 
         } catch (SQLException e) {
@@ -695,7 +716,18 @@ public class DataOperations {
                 String email = rs.getString("email");
                 int grade = rs.getInt("grade");
                 // Password is typically not retrieved for display purposes
-                return new User(id, name, email, grade);
+
+                switch (grade) {
+                    case 1:
+                        return new CLevel(id, name, email);
+                    case 2:
+                        return new MLevel(id, name, email);
+                    case 3:
+                        return new GLevel(id, name, email);
+
+
+                }
+
             }
 
         } catch (SQLException e) {

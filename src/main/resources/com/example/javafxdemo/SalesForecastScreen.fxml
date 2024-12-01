@@ -98,7 +98,7 @@
                         <ProgressBar fx:id="confidenceMeter" progress="0.0" style="-fx-pref-width: 200px;"/>
                     </HBox>
                     <Button text="Save Forecast" onAction="#saveForecast"
-                            style="-fx-background-color: blue; -fx-text-fill: white; -fx-font-size: 14px;"/>
+                            style="-fx-background-color: #000000; -fx-text-fill: white; -fx-font-size: 14px;"/>
                 </VBox>
             </HBox>
 
